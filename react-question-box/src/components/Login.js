@@ -1,10 +1,17 @@
 import { useState } from 'react';
 import { requestLogin } from '../ajax-requests';
 
-export default function Login({ setAuth }) {
+export default function Login({ setAuth, setLogin, setRegister }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const handleRegister = (event) => {
+    console.log('Handle Go to Register Called');
+    event.preventDefault();
+    setLogin(false);
+    setRegister(true);
+  };
 
   const handleLogin = (event) => {
     console.log('Hangle Login Called');
@@ -55,6 +62,11 @@ export default function Login({ setAuth }) {
           <button type='submit'>Log In</button>
         </div>
       </form>
+      <div className='field-controls'>
+        <form onClick={handleRegister}>
+          <button type='button'>Go to Registration</button>
+        </form>
+      </div>
     </>
   );
 }
