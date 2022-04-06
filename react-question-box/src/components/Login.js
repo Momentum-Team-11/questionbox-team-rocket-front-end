@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { requestLogin } from '../ajax-requests';
 
-export default function Login({ setToken }) {
+export default function Login({ setAuth }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -11,7 +11,9 @@ export default function Login({ setToken }) {
     event.preventDefault();
     console.log(username, password);
     requestLogin(username, password)
-      .then((res) => setToken(res.auth_token))
+      .then((res) => {
+        setAuth(username, res.auth_token);
+      })
       .catch((error) => setError(error.message));
 
     // axios
@@ -19,7 +21,7 @@ export default function Login({ setToken }) {
     //     username: username,
     //     passowrd: password,
     //   })
-    //   .then((res) => setToken(res.data.auth_token));
+    //   .then((res) => setAuth(res.data.auth_token, username));
   };
 
   return (
@@ -27,11 +29,11 @@ export default function Login({ setToken }) {
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div className='field-controls'>
-          <label htmlFor='user-name'>username: </label>
+          <label htmlFor='login-username'>username: </label>
           <input
             type='text'
             className='text-input'
-            id='username'
+            id='login-username'
             required
             value={username}
             onChange={(event) => setUsername(event.target.value)}
@@ -39,11 +41,11 @@ export default function Login({ setToken }) {
         </div>
         <div className='field-controls'>
           <br></br>
-          <label htmlFor='password'>password: </label>
+          <label htmlFor='login-password'>password: </label>
           <input
             type='password'
             className='password-input'
-            id='password'
+            id='login-password'
             required
             value={password}
             onChange={(event) => setPassword(event.target.value)}
