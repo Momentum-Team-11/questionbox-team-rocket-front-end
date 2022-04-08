@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Landing from './components/Landing.js';
 import Login from './components/Login.js';
 import Register from './components/Register.js';
 import Questions from './Questions.js';
@@ -30,14 +31,7 @@ const App = () => {
               <>
                 {!token ? (
                   <>
-                    <header>
-                      <h1>QuestionBox</h1>
-                    </header>
-                    <div className='auth-buttons'>
-                      <Link to='/login'>Login</Link>
-                      <br></br>
-                      <Link to='/register'>Register</Link>
-                    </div>
+                    <Landing />
                   </>
                 ) : (
                   <>
@@ -51,7 +45,11 @@ const App = () => {
               </>
             }
           >
-            <Route path='/new-question' element={<NewQuestion />} />
+            <Route
+              path='/new-question'
+              element={<NewQuestion token={token} />}
+            />
+            {/* <Route path='/question/:Q-id' element={}/> */}
           </Route>
           <Route path='/login' element={<Login setAuth={setAuth} />} />
           <Route path='/register' element={<Register setAuth={setAuth} />} />

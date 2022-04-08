@@ -9,6 +9,7 @@ export default function NewQuestion({ setNewQuestion }) {
     console.log('Handle Answer Called');
     event.preventDefault();
     setNewQuestion(false);
+    navigate('/');
   };
 
   const handleCancel = (event) => {

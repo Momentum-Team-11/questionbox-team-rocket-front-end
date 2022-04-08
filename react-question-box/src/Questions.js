@@ -25,12 +25,6 @@ export default function Questions({ username, token, setToken }) {
     navigate('/new-question');
   };
 
-  const handleNewQuestion = (event) => {
-    console.log('Handle New Question Called');
-    event.preventDefault();
-    setNewQuestion(true);
-  };
-
   const handleReturn = (event) => {
     console.log('Handle Return Called');
     event.preventDefault();
@@ -75,27 +69,17 @@ export default function Questions({ username, token, setToken }) {
             {!selectedQuestion ? (
               <>
                 <h2>Questions</h2>
-                {newQuestion ? (
-                  <>
-                    <NewQuestion setNewQuestion={setNewQuestion} />
-                  </>
-                ) : (
-                  <>
-                    <form onClick={handleNewQuestion}>
-                      <button type='button'>New Question</button>
-                    </form>
-                    {sampleData.map((q, key) => {
-                      return (
-                        <div className='question-box'>
-                          <h3 onClick={() => setSelectedQuestion(q)}>
-                            {q.question}
-                          </h3>
-                          <a href='#'>{`${q.author}`}</a>
-                        </div>
-                      );
-                    })}
-                  </>
-                )}
+                <Link to='/new-question'>New Question</Link>
+                {sampleData.map((q, key) => {
+                  return (
+                    <div className='question-box'>
+                      <h3 onClick={() => setSelectedQuestion(q)}>
+                        {q.question}
+                      </h3>
+                      <a href='#'>{`${q.author}`}</a>
+                    </div>
+                  );
+                })}
               </>
             ) : (
               <div className='question-box'>
