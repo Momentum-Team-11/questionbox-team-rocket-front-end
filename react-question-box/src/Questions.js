@@ -3,8 +3,10 @@ import sampleData from './sampleData';
 import NewAnswer from './components/NewAnswer';
 import NewQuestion from './components/NewQuestion';
 import UserProfile from './components/UserProfile';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Questions({ username, token, setToken }) {
+  const navigate = useNavigate();
   const [selectedQuestion, setSelectedQuestion] = useState(false);
   const [answerQuestion, setAnswerQuestion] = useState(false);
   const [newQuestion, setNewQuestion] = useState(false);
@@ -20,6 +22,7 @@ export default function Questions({ username, token, setToken }) {
     console.log('Handle New Answer Called');
     event.preventDefault();
     setAnswerQuestion(true);
+    navigate('/new-question');
   };
 
   const handleNewQuestion = (event) => {
@@ -33,6 +36,7 @@ export default function Questions({ username, token, setToken }) {
     event.preventDefault();
     setSelectedQuestion(false);
     setUserProfile(false);
+    navigate('/');
   };
 
   const handleLogOut = (event) => {
@@ -77,8 +81,8 @@ export default function Questions({ username, token, setToken }) {
                   </>
                 ) : (
                   <>
-                    <form onSubmit={handleNewQuestion}>
-                      <button type='submit'>New Question</button>
+                    <form onClick={handleNewQuestion}>
+                      <button type='button'>New Question</button>
                     </form>
                     {sampleData.map((q, key) => {
                       return (

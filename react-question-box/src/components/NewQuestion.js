@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function NewQuestion({ setNewQuestion }) {
+  const navigate = useNavigate();
   const [submitQuestion, setSubmitQuestion] = useState('');
 
   const handleQuestion = (event) => {
@@ -13,6 +15,7 @@ export default function NewQuestion({ setNewQuestion }) {
     console.log('Handle Cancel Called');
     event.preventDefault();
     setNewQuestion(false);
+    navigate('/');
   };
 
   return (

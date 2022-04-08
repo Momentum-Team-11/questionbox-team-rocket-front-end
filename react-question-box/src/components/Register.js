@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { requestReg } from '../ajax-requests';
+import { Link } from 'react-router-dom';
 
 export default function Register({ setAuth, setLogin, setRegister }) {
   const [username, setUsername] = useState('');
@@ -7,13 +8,6 @@ export default function Register({ setAuth, setLogin, setRegister }) {
   const [repassword, setRePassword] = useState('');
   const [error, setError] = useState('');
   const [nomatch, setNoMatch] = useState(false);
-
-  const handleLogin = (event) => {
-    console.log('Handle Go to Login Called');
-    event.preventDefault();
-    setRegister(false);
-    setLogin(true);
-  };
 
   const handleReg = (event) => {
     console.log('Handle Reg Called');
@@ -80,13 +74,13 @@ export default function Register({ setAuth, setLogin, setRegister }) {
           />
         </div>
         <div className='field-controls'>
-          <button type='submit'>Register</button>
+          <Link to='/'>
+            <button type='submit'>Register</button>
+          </Link>
         </div>
       </form>
       <div className='field-controls'>
-        <form onClick={handleLogin}>
-          <button type='button'>Go to Login</button>
-        </form>
+        <Link to='/login'>Go to Login</Link>
       </div>
     </>
   );

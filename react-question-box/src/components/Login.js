@@ -1,17 +1,12 @@
 import { useState } from 'react';
 import { requestLogin } from '../ajax-requests';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function Login({ setAuth, setLogin, setRegister }) {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
-  const handleRegister = (event) => {
-    console.log('Handle Go to Register Called');
-    event.preventDefault();
-    setLogin(false);
-    setRegister(true);
-  };
 
   const handleLogin = (event) => {
     console.log('Hangle Login Called');
@@ -23,18 +18,22 @@ export default function Login({ setAuth, setLogin, setRegister }) {
       })
       .catch((error) => setError(error.message));
 
-    // axios
-    //   .post(urlToLogin, {
-    //     username: username,
-    //     passowrd: password,
-    //   })
-    //   .then((res) => setAuth(res.data.auth_token, username));
+    //   axios
+    //     .post(heroku.app/question, {
+    //       title: question,
+    //       question:
+    //     })
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       setAuth(res.data.auth_token, username);
+    //     });
+    navigate('/');
   };
 
   return (
     <>
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleLogin} autoComplete='username'>
         <div className='field-controls'>
           <label htmlFor='login-username'>username: </label>
           <input
@@ -63,9 +62,7 @@ export default function Login({ setAuth, setLogin, setRegister }) {
         </div>
       </form>
       <div className='field-controls'>
-        <form onClick={handleRegister}>
-          <button type='button'>Go to Registration</button>
-        </form>
+        <Link to='/register'>Go to Registration</Link>
       </div>
     </>
   );

@@ -2,27 +2,18 @@ import { useState } from 'react';
 import Login from './components/Login.js';
 import Register from './components/Register.js';
 import Questions from './Questions.js';
+import NewQuestion from './components/NewQuestion.js';
+import NewAnswer from './components/NewAnswer.js';
+import UserProfile from './components/UserProfile.js';
+import useLocalStorageState from 'use-local-storage-state';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 
 const App = () => {
-  const [username, setUsername] = useState('');
-  const [token, setToken] = useState('');
-  const [home, setHome] = useState(true);
-  const [login, setLogin] = useState(false);
-  const [register, setRegister] = useState(false);
-
-  const handleLogin = (event) => {
-    console.log('Handle Login Called');
-    event.preventDefault();
-    setHome(false);
-    setLogin(true);
-  };
-
-  const handleRegister = (event) => {
-    console.log('Handle Register Called');
-    event.preventDefault();
-    setHome(false);
-    setRegister(true);
-  };
+  const [username, setUsername] = useLocalStorageState(
+    'QuestionBoxUsername',
+    ''
+  );
+  const [token, setToken] = useLocalStorageState('QuestionBoxToken', '');
 
   const setAuth = (username, token) => {
     setUsername(username);
@@ -31,48 +22,41 @@ const App = () => {
 
   return (
     <>
-      {!token ? (
-        <>
-          <header>
-            <h1>QuestionBox</h1>
-          </header>
-          {home ? (
-            <>
-              <div className='auth-buttons'>
-                <form onClick={handleLogin}>
-                  <button type='button'>Login</button>
-                </form>
-                <form onClick={handleRegister}>
-                  <button type='button'>Register</button>
-                </form>
-              </div>
-            </>
-          ) : (
-            <>
-              {login && (
-                <Login
-                  setAuth={setAuth}
-                  setLogin={setLogin}
-                  setRegister={setRegister}
-                />
-              )}
-              {register && (
-                <Register
-                  setAuth={setAuth}
-                  setLogin={setLogin}
-                  setRegister={setRegister}
-                />
-              )}
-            </>
-          )}
-        </>
-      ) : (
-        <>
-          <>
-            <Questions username={username} token={token} setToken={setToken} />
-          </>
-        </>
-      )}
+      <Router>
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <>
+                {!token ? (
+                  <>
+                    <header>
+                      <h1>QuestionBox</h1>
+                    </header>
+                    <div className='auth-buttons'>
+                      <Link to='/login'>Login</Link>
+                      <br></br>
+                      <Link to='/register'>Register</Link>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <Questions
+                      username={username}
+                      token={token}
+                      setToken={setToken}
+                    />
+                  </>
+                )}
+              </>
+            }
+          >
+            <Route path='/new-question' element={<NewQuestion />} />
+          </Route>
+          <Route path='/login' element={<Login setAuth={setAuth} />} />
+          <Route path='/register' element={<Register setAuth={setAuth} />} />
+        </Routes>
+      </Router>
     </>
   );
 };
