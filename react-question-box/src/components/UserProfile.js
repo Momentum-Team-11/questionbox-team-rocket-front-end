@@ -1,57 +1,64 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import sampleData from '../sampleData';
 
-export default function UserProfile({
-  username,
-  handleReturn,
-  setUserProfile,
-  setSelectedQuestion,
-}) {
-  const handleQuestionSelect = (event) => {
-    console.log('Handle Question Select Called');
-    setUserProfile(false);
-    setSelectedQuestion(event.target.parent);
-  };
+export default function UserProfile({ username, token }) {
+  const [answers, setAnswers] = useState(null);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
-  return (
-    <>
-      <h2>{username}</h2>
-      <form onClick={handleReturn}>
-        <button type='button'>Return to Questions</button>
-      </form>
-      <h3>Your Questions:</h3>
-      {sampleData.map((q, key) => {
-        if (q.author === username) {
+  useEffect(() => {
+    axios
+      .get('https://questionbox-rocket.herokuapp.com/answers', {
+        headers: { Authorization: `Token ${token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setAnswers(res.data);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        setError(e.message);
+      });
+  }, [token]);
+
+  if (isLoading) {
+    return <h1>LOADING</h1>;
+  } else {
+    return (
+      <>
+        <h2>{username}</h2>
+        <Link to='/'>Return to Questions</Link>
+        <h3>Your Questions:</h3>
+        {sampleData.map((q, key) => {
+          if (q.author === username) {
+            return (
+              <div className='question-box'>
+                <Link to={`/question/${q.id}`}>{q.question}</Link> <br></br>
+                <Link to={`/${q.author}`}>{`${q.author}`}</Link>
+              </div>
+            );
+          }
+        })}
+        <hr></hr>
+        <h3>Your Answers:</h3>
+        {answers.map((a, key) => {
           return (
-            <div className='question-box'>
-              <h4 onClick={handleQuestionSelect}>{q.question}</h4>
-              <a href='#'>{`${q.author}`}</a>
-            </div>
+            <>
+              <Link to={`/question/${a.question}`}>
+                <h4>{`${a.user}'s answer`}</h4>
+                <p>{a.answer}</p>
+                {!a.accepted ? (
+                  <p style={{ color: 'red' }}>not best...</p>
+                ) : (
+                  <p style={{ color: 'green' }}>BEST!</p>
+                )}
+              </Link>
+            </>
           );
-        }
-      })}
-      <hr></hr>
-      <h3>Your Answers:</h3>
-      {sampleData.map((q, key) => {
-        return (
-          <>
-            {q.answers.map((a, key) => {
-              if (a.author === username) {
-                return (
-                  <>
-                    <h4>{`${a.author}'s answer`}</h4>
-                    <p>{a.answer}</p>
-                    {!a.isBest ? (
-                      <p style={{ color: 'red' }}>not best...</p>
-                    ) : (
-                      <p style={{ color: 'green' }}>BEST!</p>
-                    )}
-                  </>
-                );
-              }
-            })}
-          </>
-        );
-      })}
-    </>
-  );
+        })}
+      </>
+    );
+  }
 }

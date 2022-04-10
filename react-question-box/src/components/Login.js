@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { requestLogin } from '../ajax-requests';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 
-export default function Login({ setAuth, setLogin, setRegister }) {
+export default function Login({ setAuth, setLogin, setRegister, isLoggedIn }) {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -11,28 +12,28 @@ export default function Login({ setAuth, setLogin, setRegister }) {
   const handleLogin = (event) => {
     console.log('Hangle Login Called');
     event.preventDefault();
+    setError('');
     console.log(username, password);
-    requestLogin(username, password)
-      .then((res) => {
-        setAuth(username, res.auth_token);
+    axios
+      .post('https://questionbox-rocket.herokuapp.com/auth/token/login/', {
+        username: username,
+        password: password,
       })
-      .catch((error) => setError(error.message));
-
-    //   axios
-    //     .post(heroku.app/question, {
-    //       title: question,
-    //       question:
-    //     })
-    //     .then((res) => {
-    //       console.log(res.data);
-    //       setAuth(res.data.auth_token, username);
-    //     });
-    navigate('/');
+      .then((res) => {
+        console.log(res.data);
+        setAuth(username, res.data.auth_token);
+      })
+      .catch((e) => setError(e.message));
   };
+
+  if (isLoggedIn) {
+    return navigate('/');
+  }
 
   return (
     <>
       <h2>Login</h2>
+      {error && <h2>{error}</h2>}
       <form onSubmit={handleLogin} autoComplete='username'>
         <div className='field-controls'>
           <label htmlFor='login-username'>username: </label>

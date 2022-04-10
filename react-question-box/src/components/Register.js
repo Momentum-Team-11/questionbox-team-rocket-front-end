@@ -1,37 +1,45 @@
 import { useState } from 'react';
-import { requestReg } from '../ajax-requests';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-export default function Register({ setAuth, setLogin, setRegister }) {
+export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [repassword, setRePassword] = useState('');
   const [error, setError] = useState('');
   const [nomatch, setNoMatch] = useState(false);
+  const [isRegistered, setIsRegistered] = useState('');
+  const navigate = useNavigate();
 
   const handleReg = (event) => {
     console.log('Handle Reg Called');
     event.preventDefault();
+    setError('');
     console.log(username, password, repassword);
     if (password === repassword) {
-      setNoMatch(false);
-      requestReg(username, password, repassword)
-        .then((res) => {
-          setAuth(username, res.auth_token);
+      axios
+        .post('https://questionbox-rocket.herokuapp.com/auth/users/', {
+          username: username,
+          password: password,
         })
-        .catch((error) => setError(error.message));
+        .then((res) => {
+          console.log(res.data);
+          setIsRegistered(res.data.username);
+        })
+        .catch((e) => {
+          console.log(e);
+          setError(e.message);
+        });
     } else {
       setNoMatch(true);
     }
-
-    // axios
-    //   .post(urlToRegister, {
-    //     username: username,
-    //     password: password,
-    //     repassword: repassword,
-    //   })
-    //   .then((res) => setAuth(res.data.auth_token, username));
   };
+
+  if (error) {
+    return <h1>{`${error}`}</h1>;
+  } else if (isRegistered) {
+    return navigate('/');
+  }
 
   return (
     <>
@@ -74,9 +82,7 @@ export default function Register({ setAuth, setLogin, setRegister }) {
           />
         </div>
         <div className='field-controls'>
-          <Link to='/'>
-            <button type='submit'>Register</button>
-          </Link>
+          <button type='submit'>Register</button>
         </div>
       </form>
       <div className='field-controls'>
