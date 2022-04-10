@@ -1,12 +1,25 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import sampleData from '../sampleData';
 
 export default function UserProfile({ username, token }) {
   const [answers, setAnswers] = useState(null);
+  const [questions, setQuestions] = useState(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get('https://questionbox-rocket.herokuapp.com/questions/')
+      .then((res) => {
+        console.log('Get Questions Called');
+        console.log(res.data);
+        setQuestions(res.data);
+      })
+      .catch((e) => {
+        setError(e.message);
+      });
+  }, []);
 
   useEffect(() => {
     axios
@@ -14,6 +27,7 @@ export default function UserProfile({ username, token }) {
         headers: { Authorization: `Token ${token}` },
       })
       .then((res) => {
+        console.log('Get Answers Called');
         console.log(res.data);
         setAnswers(res.data);
         setIsLoading(false);
@@ -35,15 +49,16 @@ export default function UserProfile({ username, token }) {
         <h2>{username}</h2>
         <Link to='/'>Return to Questions</Link>
         <h3>Your Questions:</h3>
-        {sampleData.map((q, key) => {
-          if (q.author === username) {
+        {questions.map((q, key) => {
+          if (q.user === username) {
             return (
               <div className='question-box'>
                 <Link to={`/question/${q.id}`}>{q.question}</Link> <br></br>
-                <Link to={`/${q.author}`}>{`${q.author}`}</Link>
+                <br></br>
               </div>
             );
           }
+          return null;
         })}
         <hr></hr>
         <h3>Your Answers:</h3>
@@ -51,6 +66,18 @@ export default function UserProfile({ username, token }) {
           return (
             <>
               <Link to={`/question/${a.question}`}>
+                {questions.map((q, key) => {
+                  if (q.pk === a.question) {
+                    return (
+                      <>
+                        <p>
+                          <i>{`for question "${q.title}"`}</i>
+                        </p>
+                      </>
+                    );
+                  }
+                  return null;
+                })}
                 <h4>{`${a.user}'s answer`}</h4>
                 <p>{a.answer}</p>
                 {!a.accepted ? (
@@ -62,6 +89,7 @@ export default function UserProfile({ username, token }) {
             </>
           );
         })}
+        <Link to='/'>See All Questions</Link>
       </>
     );
   }

@@ -6,8 +6,9 @@ import NewQuestion from './components/NewQuestion.js';
 import NewAnswer from './components/NewAnswer.js';
 import UserProfile from './components/UserProfile.js';
 import useLocalStorageState from 'use-local-storage-state';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import SelectedQuestion from './components/SelectedQuestion.js';
+import axios from 'axios';
 
 const App = () => {
   const [username, setUsername] = useLocalStorageState(
@@ -21,11 +22,43 @@ const App = () => {
     setToken(token);
   };
 
+  const handleLogOut = (event) => {
+    console.log('Handle Log Out Called');
+    event.preventDefault();
+    axios
+      .post(
+        'https://questionbox-rocket.herokuapp.com/auth/token/logout/',
+        {},
+        {
+          headers: { Authorization: `Token ${token}` },
+        }
+      )
+      .then((res) => {
+        setAuth(null, null);
+      });
+  };
+
   const isLoggedIn = username && token;
 
   return (
     <>
       <Router>
+        {!token ? (
+          <></>
+        ) : (
+          <>
+            <header>
+              <h1 className='title'>QuestionBox</h1>
+              <Link to={`/${username}`}>{`${username}`}</Link>
+              <br></br>
+              <div className='auth-buttons'>
+                <form onSubmit={handleLogOut}>
+                  <button type='submit'>Log Out</button>
+                </form>
+              </div>
+            </header>
+          </>
+        )}
         <Routes>
           <Route
             path='/'

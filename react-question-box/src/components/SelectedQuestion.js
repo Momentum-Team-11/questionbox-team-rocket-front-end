@@ -34,6 +34,7 @@ export default function SelectedQuestion(token) {
         </>
       ) : (
         <div className='question-box'>
+          <h4>{`${q.user}'s question:`}</h4>
           <h2>{q.question}</h2>
           <>
             <Link to={`/question/${params.Q_id}/new-answer`}>
@@ -44,7 +45,7 @@ export default function SelectedQuestion(token) {
                 return (
                   <>
                     <h4>
-                      <Link to={`/${a.user}`}>{`${a.user}`}</Link>
+                      <p>{`${a.user}`}</p>
                     </h4>
                     <h4>'s answer</h4>
                     <p>{a.answer}</p>
