@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { requestLogin } from '../ajax-requests';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 

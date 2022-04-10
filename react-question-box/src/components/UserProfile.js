@@ -23,6 +23,10 @@ export default function UserProfile({ username, token }) {
       });
   }, [token]);
 
+  if (error) {
+    return <h1>{`${error}`}</h1>;
+  }
+
   if (isLoading) {
     return <h1>LOADING</h1>;
   } else {
