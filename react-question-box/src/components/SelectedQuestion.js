@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, Navigate } from 'react-router-dom';
 
 export default function SelectedQuestion(token) {
   const params = useParams();
@@ -23,6 +23,8 @@ export default function SelectedQuestion(token) {
         setError(e.message);
       });
   }, [params.Q_id, token]);
+
+  if (!token) return <Navigate to='/' />;
 
   return (
     <>

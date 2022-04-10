@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 export default function UserProfile({ username, token }) {
   const [answers, setAnswers] = useState(null);
@@ -36,6 +36,8 @@ export default function UserProfile({ username, token }) {
         setError(e.message);
       });
   }, [token]);
+
+  if (!token) return <Navigate to='/' />;
 
   if (error) {
     return <h1>{`${error}`}</h1>;

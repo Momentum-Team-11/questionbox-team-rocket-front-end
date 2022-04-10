@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
 
 export default function NewQuestion({ setNewQuestion, token }) {
   const navigate = useNavigate();
@@ -33,6 +33,8 @@ export default function NewQuestion({ setNewQuestion, token }) {
       navigate('/');
     }
   };
+
+  if (!token) return <Navigate to='/' />;
 
   return (
     <>
