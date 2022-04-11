@@ -13,7 +13,7 @@ export default function NewQuestion({ setNewQuestion, token }) {
     event.preventDefault();
     axios
       .post(
-        'https://questionbox-rocket.herokuapp.com/question/',
+        'https://questionbox-rocket.herokuapp.com/questions/',
         {
           title: title,
           question: question,

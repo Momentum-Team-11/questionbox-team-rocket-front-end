@@ -65,31 +65,34 @@ export default function UserProfile({ username, token }) {
         <hr></hr>
         <h3>Your Answers:</h3>
         {answers.map((a, key) => {
-          return (
-            <>
-              <Link to={`/question/${a.question}`}>
-                {questions.map((q, key) => {
-                  if (q.pk === a.question) {
-                    return (
-                      <>
-                        <p>
-                          <i>{`for question "${q.title}"`}</i>
-                        </p>
-                      </>
-                    );
-                  }
-                  return null;
-                })}
-                <h4>{`${a.user}'s answer`}</h4>
-                <p>{a.answer}</p>
-                {!a.accepted ? (
-                  <p style={{ color: 'red' }}>not best...</p>
-                ) : (
-                  <p style={{ color: 'green' }}>BEST!</p>
-                )}
-              </Link>
-            </>
-          );
+          if (a.user === username) {
+            return (
+              <>
+                <Link to={`/question/${a.question}`}>
+                  {questions.map((q, key) => {
+                    if (q.pk === a.question) {
+                      return (
+                        <>
+                          <p>
+                            <i>{`for question "${q.title}"`}</i>
+                          </p>
+                        </>
+                      );
+                    }
+                    return null;
+                  })}
+                  <h4>{`${a.user}'s answer`}</h4>
+                  <p>{a.answer}</p>
+                  {!a.accepted ? (
+                    <p style={{ color: 'red' }}>not best...</p>
+                  ) : (
+                    <p style={{ color: 'green' }}>BEST!</p>
+                  )}
+                </Link>
+              </>
+            );
+          }
+          return null;
         })}
         <Link to='/'>See All Questions</Link>
       </>

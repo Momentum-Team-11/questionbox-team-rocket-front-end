@@ -5,6 +5,7 @@ import Questions from './Questions.js';
 import NewQuestion from './components/NewQuestion.js';
 import NewAnswer from './components/NewAnswer.js';
 import UserProfile from './components/UserProfile.js';
+import EditAnswer from './components/EditAnswer.js';
 import useLocalStorageState from 'use-local-storage-state';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import SelectedQuestion from './components/SelectedQuestion.js';
@@ -83,11 +84,15 @@ const App = () => {
           <Route path='/new-question' element={<NewQuestion token={token} />} />
           <Route
             path='/question/:Q_id'
-            element={<SelectedQuestion token={token} />}
+            element={<SelectedQuestion token={token} username={username} />}
           />
           <Route
             path='/question/:Q_id/new-answer'
             element={<NewAnswer token={token} />}
+          />
+          <Route
+            path='/question/:Q_id/edit-answer/:A_id'
+            element={<EditAnswer token={token} />}
           />
           <Route
             path='/:username'
