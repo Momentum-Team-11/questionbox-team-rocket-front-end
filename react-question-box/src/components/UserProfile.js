@@ -72,7 +72,12 @@ export default function UserProfile({ username, token }) {
             {favQs.map((q, key) => {
               return (
                 <div className='question-box'>
-                  <Link to={`/question/${q.pk}`}>{q.question}</Link> <br></br>
+                  <Link to={`/question/${q.pk}`}>
+                    {q.title}
+                    <br></br>
+                    {q.question}
+                  </Link>
+                  <br></br>
                   <br></br>
                 </div>
               );
@@ -90,7 +95,12 @@ export default function UserProfile({ username, token }) {
             {questions.map((q, key) => {
               return (
                 <div className='question-box'>
-                  <Link to={`/question/${q.pk}`}>{q.question}</Link> <br></br>
+                  <Link to={`/question/${q.pk}`}>
+                    {q.title}
+                    <br></br>
+                    {q.question}
+                  </Link>
+                  <br></br>
                   <br></br>
                 </div>
               );
@@ -130,10 +140,10 @@ export default function UserProfile({ username, token }) {
                       <p style={{ color: 'green' }}>BEST!</p>
                     )}
                   </Link>
-                  <Link to='/'>See All Questions</Link>
                 </>
               );
             })}
+            <Link to='/'>See All Questions</Link>
           </>
         ) : (
           <>

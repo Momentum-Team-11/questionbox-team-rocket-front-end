@@ -14,7 +14,7 @@ export default function NewAnswer({ token }) {
     event.preventDefault();
     axios
       .post(
-        'https://questionbox-rocket.herokuapp.com/answer/',
+        'https://questionbox-rocket.herokuapp.com/answers/',
         {
           answer: newAnswer,
           question: params.Q_id,
