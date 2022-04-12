@@ -18,7 +18,7 @@ const App = () => {
     ''
   );
   const [token, setToken] = useLocalStorageState('QuestionBoxToken', '');
-  const [error, setError] = useState('');
+  const [status, setStatus] = useState(null);
 
   const setAuth = (username, token) => {
     setUsername(username);
@@ -28,7 +28,7 @@ const App = () => {
   const handleLogOut = (event) => {
     console.log('Handle Log Out Called');
     event.preventDefault();
-    setError('');
+    setResult(null);
     axios
       .post(
         'https://questionbox-rocket.herokuapp.com/auth/token/logout/',
@@ -39,15 +39,16 @@ const App = () => {
       )
       .then((res) => {
         console.log(res);
+        setStatus(res.status);
         setAuth(null, null);
       })
       .catch((e) => {
         console.log(e);
-        setError(e.message);
+        setStatus(e.status);
       });
   };
 
-  if (error.includes('401')) {
+  if (status === 401) {
     setAuth(null, null);
   }
 
