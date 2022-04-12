@@ -6,7 +6,6 @@ export default function Questions({ username, token, setAuth }) {
   const [questions, setQuestions] = useState(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  // const [favorite, setFavorite] = useState(null);
 
   // const handleFavorite = (event) => {
   //   console.log('Handle Favorite Called');

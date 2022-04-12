@@ -25,39 +25,37 @@ export default function UserProfile({ username, token }) {
       .catch((e) => {
         setError(e.message);
         console.log(error);
+      })
+      .then(() => {
+        axios
+          .get('https://questionbox-rocket.herokuapp.com/questions/user', {
+            headers: { Authorization: `Token ${token}` },
+          })
+          .then((res) => {
+            console.log('Get Questions Called');
+            console.log(res.data);
+            setQuestions(res.data);
+          })
+          .catch((e) => {
+            setError(e.message);
+          });
+      })
+      .then(() => {
+        axios
+          .get('https://questionbox-rocket.herokuapp.com/answers/user', {
+            headers: { Authorization: `Token ${token}` },
+          })
+          .then((res) => {
+            console.log('Get Answers Called');
+            console.log(res.data);
+            setAnswers(res.data);
+            setIsLoading(false);
+          })
+          .catch((e) => {
+            setError(e.message);
+          });
       });
   }, [error, token]);
-
-  useEffect(() => {
-    axios
-      .get('https://questionbox-rocket.herokuapp.com/questions/user', {
-        headers: { Authorization: `Token ${token}` },
-      })
-      .then((res) => {
-        console.log('Get Questions Called');
-        console.log(res.data);
-        setQuestions(res.data);
-      })
-      .catch((e) => {
-        setError(e.message);
-      });
-  }, [token]);
-
-  useEffect(() => {
-    axios
-      .get('https://questionbox-rocket.herokuapp.com/answers/user', {
-        headers: { Authorization: `Token ${token}` },
-      })
-      .then((res) => {
-        console.log('Get Answers Called');
-        console.log(res.data);
-        setAnswers(res.data);
-        setIsLoading(false);
-      })
-      .catch((e) => {
-        setError(e.message);
-      });
-  }, [token]);
 
   if (!token) return <Navigate to='/' />;
 
