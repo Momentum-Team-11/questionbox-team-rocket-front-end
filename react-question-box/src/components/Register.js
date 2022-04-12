@@ -43,51 +43,72 @@ export default function Register() {
 
   return (
     <>
-      <h2>Register</h2>
-      <form onSubmit={handleReg}>
-        <div className='field-controls'>
-          <label htmlFor='reg-username'>username: </label>
-          <input
-            type='text'
-            className='text-input'
-            id='reg-username'
-            required
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
+      <div className='hero is-warning is-small'>
+        <h1 className='hero-body title has-text-centered has-text-weigh-bold'>
+          QuestionBox
+        </h1>
+      </div>
+      <h2 className='title has-text-centered'>Register</h2>
+      <form className='is-centered mx-6' onSubmit={handleReg}>
+        <div className='field'>
+          <label className='label' htmlFor='reg-username'>
+            username:{' '}
+          </label>
+          <div className='control'>
+            <input
+              type='text'
+              className='input'
+              id='reg-username'
+              required
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+            />
+          </div>
         </div>
-        <div className='field-controls'>
-          <br></br>
-          <label htmlFor='reg-password'>password: </label>
-          <input
-            type='password'
-            className='password-input'
-            id='reg-password'
-            required
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
+        <div className='field'>
+          <label className='label' htmlFor='reg-password'>
+            password:{' '}
+          </label>
+          <div className='control'>
+            <input
+              type='password'
+              className='input'
+              id='reg-password'
+              required
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+          </div>
         </div>
-        <div className='field-controls'>
-          <br></br>
+        <div className='field'>
           {nomatch && <div className='error'>The passwords do not match!</div>}
-          <label htmlFor='reg-repassword'>retype password: </label>
-          <input
-            type='password'
-            className='password-input'
-            id='reg-repassword'
-            required
-            value={repassword}
-            onChange={(event) => setRePassword(event.target.value)}
-          />
+          <label className='label' htmlFor='reg-repassword'>
+            retype password:{' '}
+          </label>
+          <div className='control'>
+            <input
+              type='password'
+              className='input'
+              id='reg-repassword'
+              required
+              value={repassword}
+              onChange={(event) => setRePassword(event.target.value)}
+            />
+          </div>
         </div>
-        <div className='field-controls'>
-          <button type='submit'>Register</button>
+        <div className='field is-grouped is-grouped-centered'>
+          <div className='control'>
+            <button className='button is-success' type='submit'>
+              Register
+            </button>
+          </div>
+          <div className='control'>
+            <Link className='button is-link' to='/login'>
+              Go to Login
+            </Link>
+          </div>
         </div>
       </form>
-      <div className='field-controls'>
-        <Link to='/login'>Go to Login</Link>
-      </div>
     </>
   );
 }

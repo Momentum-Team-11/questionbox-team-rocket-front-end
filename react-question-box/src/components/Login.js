@@ -31,39 +31,61 @@ export default function Login({ setAuth, setLogin, setRegister, isLoggedIn }) {
 
   return (
     <>
-      <h2>Login</h2>
+      <div className='hero is-warning is-small'>
+        <h1 className='hero-body title has-text-centered has-text-weigh-bold'>
+          QuestionBox
+        </h1>
+      </div>
+      <h2 className='title has-text-centered'>Login</h2>
       {error && <h2>{error}</h2>}
-      <form onSubmit={handleLogin} autoComplete='username'>
-        <div className='field-controls'>
-          <label htmlFor='login-username'>username: </label>
-          <input
-            type='text'
-            className='text-input'
-            id='login-username'
-            required
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
+      <form
+        className='is-centered mx-6'
+        onSubmit={handleLogin}
+        autoComplete='username'
+      >
+        <div className='field'>
+          <label className='label' htmlFor='login-username'>
+            username:
+          </label>
+          <div className='control'>
+            <input
+              type='text'
+              className='input'
+              id='login-username'
+              required
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+            />
+          </div>
         </div>
-        <div className='field-controls'>
-          <br></br>
-          <label htmlFor='login-password'>password: </label>
-          <input
-            type='password'
-            className='password-input'
-            id='login-password'
-            required
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
+        <div className='field'>
+          <label className='label' htmlFor='login-password'>
+            password:
+          </label>
+          <div className='control'>
+            <input
+              type='password'
+              className='input'
+              id='login-password'
+              required
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+          </div>
         </div>
-        <div className='field-controls'>
-          <button type='submit'>Log In</button>
+        <div className='field is-grouped is-grouped-centered'>
+          <div className='control'>
+            <button className='button is-success' type='submit'>
+              Log In
+            </button>
+          </div>
+          <div className='control'>
+            <Link className='button is-link' to='/register'>
+              Go to Registration
+            </Link>
+          </div>
         </div>
       </form>
-      <div className='field-controls'>
-        <Link to='/register'>Go to Registration</Link>
-      </div>
     </>
   );
 }

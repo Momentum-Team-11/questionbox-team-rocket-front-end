@@ -51,44 +51,60 @@ export default function Questions({ username, token, setAuth }) {
     return (
       <>
         {error && <h3>{error}</h3>}
-        <div className='questions-container'>
-          <h2>Questions</h2>
-          <Link to='/new-question'>New Question</Link>
-          {questions.map((q, key) => {
-            const Q_id = q.pk;
-            return (
-              <div className='question-box'>
-                <br></br>
-                <Link to={`/question/${Q_id}`}>
-                  <h3>{q.title}</h3>
-                  <h4>{q.question}</h4>
-                </Link>
-                <p>{`${q.user}`}</p>
-                {q.favorited.length === 0 ? (
-                  <p
-                  // onClick={[handleFavorite, setFavorite(q.pk)]}
-                  >{`<p>NOT favorited...</p>`}</p>
-                ) : (
-                  <></>
-                )}
-                {q.favorited.map((f, key) => {
-                  if (f === 2) {
-                    return (
-                      <p
-                      // onClick={[handleFavorite, setFavorite(q.pk)]}
-                      >{`<p>favorited</p>`}</p>
-                    );
-                  } else {
-                    return (
-                      <p
-                      // onClick={[handleFavorite, setFavorite(q.pk)]}
-                      >{`<p>NOT favorited...</p>`}</p>
-                    );
-                  }
+        <div className='container mt-3'>
+          <div className='columns is-centered'>
+            <div className='column is-two-thirds'>
+              <div className='questions-container'>
+                <h2 className='title has-text-centered'>Questions</h2>
+                <div className='field is-grouped is-grouped-centered'>
+                  <Link className='button' to='/new-question'>
+                    New Question
+                  </Link>
+                </div>
+                {questions.map((q, key) => {
+                  const Q_id = q.pk;
+                  return (
+                    <div className='question-box'>
+                      <br></br>
+                      <div className='is-flex'>
+                        {q.favorited.length === 0 ? (
+                          <i // onClick={[handleFavorite, setFavorite(q.pk)]}
+                            className='fa fa-regular fa-star'
+                          ></i>
+                        ) : (
+                          <></>
+                        )}
+                        {q.favorited.map((f, key) => {
+                          if (f === username) {
+                            return (
+                              <span className='is-icon is-small is-left'>
+                                <i // onClick={[handleFavorite, setFavorite(q.pk)]}
+                                  className='fa fa-solid fa-star'
+                                ></i>
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <i // onClick={[handleFavorite, setFavorite(q.pk)]}
+                                className='fa fa-regular fa-star'
+                              ></i>
+                            );
+                          }
+                        })}
+                        <div>
+                          <Link to={`/question/${Q_id}`}>
+                            <h3 className='is-size-4'>{q.title}</h3>
+                            <h4>{q.question}</h4>
+                          </Link>
+                          <p>{`by ${q.user}`}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
                 })}
               </div>
-            );
-          })}
+            </div>
+          </div>
         </div>
       </>
     );

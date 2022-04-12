@@ -3,13 +3,20 @@ import { Link } from 'react-router-dom';
 export default function Landing() {
   return (
     <>
-      <header>
-        <h1>QuestionBox</h1>
-      </header>
-      <div className='auth-buttons'>
-        <Link to='/login'>Login</Link>
+      <div className='hero is-warning is-small'>
+        <h1 className='hero-body title has-text-centered has-text-weigh-bold'>
+          QuestionBox
+        </h1>
+      </div>
+      <br></br>
+      <div className='auth-buttons columns is-centered'>
+        <Link className='button is-primary mx-1' to='/login'>
+          Login
+        </Link>
         <br></br>
-        <Link to='/register'>Register</Link>
+        <Link className='button is-link mx-1' to='/register'>
+          Register
+        </Link>
       </div>
     </>
   );

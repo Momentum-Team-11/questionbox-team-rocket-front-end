@@ -62,16 +62,28 @@ const App = () => {
           <></>
         ) : (
           <>
-            <header>
-              <h1 className='title'>QuestionBox</h1>
-              <Link to={`/${username}`}>{`${username}`}</Link>
-              <br></br>
+            <div className='hero is-warning is-small'>
+              <h1 className='title has-text-centered has-text-weigh-bold'>
+                QuestionBox
+              </h1>
+              <Link
+                className='has-text-centered is-size-4'
+                to={`/${username}`}
+              >{`${username}`}</Link>
               <div className='auth-buttons'>
-                <form onSubmit={handleLogOut}>
-                  <button type='submit'>Log Out</button>
+                <form
+                  className='field is-grouped is-grouped-centered'
+                  onSubmit={handleLogOut}
+                >
+                  <button
+                    className='button is-dark is-small mb-3'
+                    type='submit'
+                  >
+                    Log Out
+                  </button>
                 </form>
               </div>
-            </header>
+            </div>
           </>
         )}
         <Routes>

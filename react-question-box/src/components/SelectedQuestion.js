@@ -6,7 +6,6 @@ export default function SelectedQuestion({ token, username }) {
   const navigate = useNavigate;
   const params = useParams();
   const [q, setQ] = useState(null);
-  const [a, setA] = useState(null);
   const [currentA, setCurrentA] = useState('');
   const [accepted, setAccepted] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -122,29 +121,15 @@ export default function SelectedQuestion({ token, username }) {
     // }, [params.Q_id, token]);
 
     axios
-      .get('https://questionbox-rocket.herokuapp.com/questions/')
+      .get(`https://questionbox-rocket.herokuapp.com/questions/${params.Q_id}`)
       .then((res) => {
         console.log('Get Questions Called');
         console.log(res.data);
         setQ(res.data);
+        setIsLoading(false);
       })
       .catch((e) => {
         setError(e.message);
-      })
-      .then(() => {
-        axios
-          .get('https://questionbox-rocket.herokuapp.com/answers/', {
-            headers: { Authorization: `Token ${token}` },
-          })
-          .then((res) => {
-            console.log('Get Answers Called');
-            console.log(res.data);
-            setA(res.data);
-            setIsLoading(false);
-          })
-          .catch((e) => {
-            setError(e.message);
-          });
       });
   }, [error, params, token]);
 
@@ -155,211 +140,191 @@ export default function SelectedQuestion({ token, username }) {
   } else {
     return (
       <>
-        {error && console.log(error)}
-        {q.map((q, key) => {
-          if (q.pk === Number(params.Q_id)) {
-            return (
-              <>
-                {isLoading ? (
+        {isLoading ? (
+          <>
+            <h1>LOADING</h1>
+            <h1>{`${error}`}</h1>
+          </>
+        ) : (
+          <div className='question-box'>
+            <div className='is-flex'>
+              {q.favorited.map((f, key) => {
+                if (f === username) {
+                  return (
+                    <span className='is-icon is-small is-left'>
+                      <i // onClick={[handleFavorite, setFavorite(q.pk)]}
+                        className='fa fa-solid fa-star'
+                      ></i>
+                    </span>
+                  );
+                } else {
+                  return (
+                    <i // onClick={[handleFavorite, setFavorite(q.pk)]}
+                      className='fa fa-regular fa-star'
+                    ></i>
+                  );
+                }
+              })}
+              <div>
+                <h3>{`${q.title}`}</h3>
+                <h4>{`${q.user}'s question:`}</h4>
+                <h2>{q.question}</h2>
+                {q.user === username ? (
                   <>
-                    <h1>LOADING</h1>
-                    <h1>{`${error}`}</h1>
+                    <form onSubmit={handleDeleteQuestion}>
+                      <div className='field-controls'>
+                        <button type='submit'>Delete Question</button>
+                      </div>
+                    </form>
                   </>
                 ) : (
-                  <div className='question-box'>
-                    <h3>{`${q.title}`}</h3>
-                    <h4>{`${q.user}'s question:`}</h4>
-                    <h2>{q.question}</h2>
-                    {q.favorited.length === 0 ? (
-                      <p
-                      // onClick={[handleFavorite, setFavorite(q.pk)]}
-                      >{`<p>NOT favorited...</p>`}</p>
-                    ) : (
-                      <></>
-                    )}
-                    {q.favorited.map((f, key) => {
-                      if (f === 2) {
-                        return (
-                          <p
-                          // onClick={[handleFavorite, setFavorite(q.pk)]}
-                          >{`<p>favorited</p>`}</p>
-                        );
-                      } else {
-                        return (
-                          <p
-                          // onClick={[handleFavorite, setFavorite(q.pk)]}
-                          >{`<p>NOT favorited...</p>`}</p>
-                        );
-                      }
-                    })}
-                    {q.user === username ? (
+                  <></>
+                )}
+              </div>
+            </div>
+            <br></br>
+            {q.answers.map((a, key) => {
+              if (a.question === Number(params.Q_id)) {
+                return (
+                  <>
+                    {a.accepted ? (
                       <>
-                        <form onSubmit={handleDeleteQuestion}>
-                          <div className='field-controls'>
-                            <button type='submit'>Delete Question</button>
-                          </div>
-                        </form>
+                        <h2>Best Answer:</h2>
+                        <h4>{`${a.user}'s answer`}</h4>
+                        <p>{a.answer}</p>
+                        {!a.accepted ? (
+                          <p
+                            style={{ color: 'red' }}
+                          >{`<img><empty-checkmark></img>`}</p>
+                        ) : (
+                          <p
+                            style={{ color: 'green' }}
+                          >{`<img><filled-checkmark></img>`}</p>
+                        )}
+                        {a.user === username ? (
+                          <>
+                            <Link
+                              to={`/question/${params.Q_id}/edit-answer/${a.pk}/`}
+                            >
+                              Edit Answer
+                            </Link>
+                            <form
+                              onSubmit={(event) => {
+                                setCurrentA(a.pk);
+                                handleDeleteAnswer(event);
+                              }}
+                            >
+                              <div className='field-controls'>
+                                <button type='submit'>Delete Answer</button>
+                              </div>
+                            </form>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                        {a.user === username ? (
+                          <>
+                            <div className='field-controls'>
+                              <form
+                                onSubmit={(event) => {
+                                  setCurrentA(a.pk);
+                                  setAccepted(false);
+                                  handleAcceptedAnswer(event);
+                                }}
+                              >
+                                <button type='submit'>
+                                  This is no longer the best answer
+                                </button>
+                              </form>
+                            </div>
+                          </>
+                        ) : (
+                          <></>
+                        )}
                       </>
                     ) : (
                       <></>
                     )}
-                    <br></br>
-                    {a.map((a, key) => {
-                      if (a.question === Number(params.Q_id)) {
-                        return (
-                          <>
-                            {a.accepted ? (
-                              <>
-                                <h2>Best Answer:</h2>
-                                <h4>{`${a.user}'s answer`}</h4>
-                                <p>{a.answer}</p>
-                                {!a.accepted ? (
-                                  <p
-                                    style={{ color: 'red' }}
-                                  >{`<img><empty-checkmark></img>`}</p>
-                                ) : (
-                                  <p
-                                    style={{ color: 'green' }}
-                                  >{`<img><filled-checkmark></img>`}</p>
-                                )}
-                                {a.user === username ? (
-                                  <>
-                                    <Link
-                                      to={`/question/${params.Q_id}/edit-answer/${a.pk}/`}
-                                    >
-                                      Edit Answer
-                                    </Link>
-                                    <form
-                                      onSubmit={(event) => {
-                                        setCurrentA(a.pk);
-                                        handleDeleteAnswer(event);
-                                      }}
-                                    >
-                                      <div className='field-controls'>
-                                        <button type='submit'>
-                                          Delete Answer
-                                        </button>
-                                      </div>
-                                    </form>
-                                  </>
-                                ) : (
-                                  <></>
-                                )}
-                                {q.user === username ? (
-                                  <>
-                                    <div className='field-controls'>
-                                      <form
-                                        onSubmit={(event) => {
-                                          setCurrentA(a.pk);
-                                          setAccepted(false);
-                                          handleAcceptedAnswer(event);
-                                        }}
-                                      >
-                                        <button type='submit'>
-                                          This is no longer the best answer
-                                        </button>
-                                      </form>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <></>
-                                )}
-                              </>
-                            ) : (
-                              <>
-                                <h2>
-                                  {`${q.user} has not chosen their prefered answer yet...`}
-                                </h2>
-                                <br></br>
-                              </>
-                            )}
-                          </>
-                        );
-                      }
-                      return null;
-                    })}
-                    <Link to={`/question/${params.Q_id}/new-answer`}>
-                      Submit New Answer
-                    </Link>
-                    <br></br>
-                    <br></br>
-                    <div className='answer-box'>
-                      {a.map((a, key) => {
-                        if (a.question === Number(params.Q_id)) {
-                          return (
+                  </>
+                );
+              }
+              return null;
+            })}
+            <Link to={`/question/${params.Q_id}/new-answer`}>
+              Submit New Answer
+            </Link>
+            <br></br>
+            <br></br>
+            <div className='answer-box'>
+              {q.answers.map((a, key) => {
+                if (a.question === Number(params.Q_id)) {
+                  return (
+                    <>
+                      {!a.accepted ? (
+                        <>
+                          <h4>{`${a.user}'s answer`}</h4>
+                          <p>{a.answer}</p>
+                          {!a.accepted ? (
+                            <p
+                              style={{ color: 'red' }}
+                            >{`<img><empty-checkmark></img>`}</p>
+                          ) : (
+                            <p
+                              style={{ color: 'green' }}
+                            >{`<img><filled-checkmark></img>`}</p>
+                          )}
+                          {q.user === username ? (
                             <>
-                              {!a.accepted ? (
-                                <>
-                                  <h4>{`${a.user}'s answer`}</h4>
-                                  <p>{a.answer}</p>
-                                  {!a.accepted ? (
-                                    <p
-                                      style={{ color: 'red' }}
-                                    >{`<img><empty-checkmark></img>`}</p>
-                                  ) : (
-                                    <p
-                                      style={{ color: 'green' }}
-                                    >{`<img><filled-checkmark></img>`}</p>
-                                  )}
-                                  {q.user === username ? (
-                                    <>
-                                      <form
-                                        onSubmit={(event) => {
-                                          setCurrentA(a.pk);
-                                          setAccepted(true);
-                                          handleAcceptedAnswer(event, a.pk);
-                                        }}
-                                      >
-                                        <button type='submit'>
-                                          Accept as Best Answer
-                                        </button>
-                                      </form>
-                                    </>
-                                  ) : (
-                                    <></>
-                                  )}
-                                  {a.user === username ? (
-                                    <>
-                                      <Link
-                                        to={`/question/${params.Q_id}/edit-answer/${a.pk}/`}
-                                      >
-                                        Edit Answer
-                                      </Link>
-                                      <form
-                                        onSubmit={(event) => {
-                                          setCurrentA(a.pk);
-                                          handleDeleteAnswer(event);
-                                        }}
-                                      >
-                                        <div className='field-controls'>
-                                          <button type='submit'>
-                                            Delete Answer
-                                          </button>
-                                        </div>
-                                      </form>
-                                    </>
-                                  ) : (
-                                    <></>
-                                  )}
-                                </>
-                              ) : (
-                                <></>
-                              )}
-                              <br></br>
+                              <form
+                                onSubmit={(event) => {
+                                  setCurrentA(a.pk);
+                                  setAccepted(true);
+                                  handleAcceptedAnswer(event, a.pk);
+                                }}
+                              >
+                                <button type='submit'>
+                                  Accept as Best Answer
+                                </button>
+                              </form>
                             </>
-                          );
-                        }
-                        return null;
-                      })}
-                    </div>
-                  </div>
-                )}
-                <Link to='/'>See All Questions</Link>
-              </>
-            );
-          }
-          return null;
-        })}
+                          ) : (
+                            <></>
+                          )}
+                          {a.user === username ? (
+                            <>
+                              <Link
+                                to={`/question/${params.Q_id}/edit-answer/${a.pk}/`}
+                              >
+                                Edit Answer
+                              </Link>
+                              <form
+                                onSubmit={(event) => {
+                                  setCurrentA(a.pk);
+                                  handleDeleteAnswer(event);
+                                }}
+                              >
+                                <div className='field-controls'>
+                                  <button type='submit'>Delete Answer</button>
+                                </div>
+                              </form>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                      <br></br>
+                    </>
+                  );
+                }
+                return null;
+              })}
+            </div>
+          </div>
+        )}
+        <Link to='/'>See All Questions</Link>
       </>
     );
   }
