@@ -36,6 +36,9 @@ const App = () => {
       )
       .then((res) => {
         setAuth(null, null);
+      })
+      .catch((e) => {
+        console.log(e);
       });
   };
 
