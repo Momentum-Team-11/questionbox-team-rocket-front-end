@@ -7,10 +7,32 @@ export default function UserProfile({ username, token }) {
   const [questions, setQuestions] = useState(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [favQs, setFavQs] = useState(null);
 
   useEffect(() => {
     axios
-      .get('https://questionbox-rocket.herokuapp.com/questions/')
+      .get(
+        'https://questionbox-rocket.herokuapp.com/questions/favorited/user',
+        {
+          headers: { Authorization: `Token ${token}` },
+        }
+      )
+      .then((res) => {
+        console.log('Get Favorited Questions Called');
+        console.log(res.data);
+        setFavQs(res.data);
+      })
+      .catch((e) => {
+        setError(e.message);
+        console.log(error);
+      });
+  }, [error, token]);
+
+  useEffect(() => {
+    axios
+      .get('https://questionbox-rocket.herokuapp.com/questions/user', {
+        headers: { Authorization: `Token ${token}` },
+      })
       .then((res) => {
         console.log('Get Questions Called');
         console.log(res.data);
@@ -19,11 +41,11 @@ export default function UserProfile({ username, token }) {
       .catch((e) => {
         setError(e.message);
       });
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     axios
-      .get('https://questionbox-rocket.herokuapp.com/answers', {
+      .get('https://questionbox-rocket.herokuapp.com/answers/user', {
         headers: { Authorization: `Token ${token}` },
       })
       .then((res) => {
@@ -39,62 +61,88 @@ export default function UserProfile({ username, token }) {
 
   if (!token) return <Navigate to='/' />;
 
-  if (error) {
-    return <h1>{`${error}`}</h1>;
-  }
-
   if (isLoading) {
     return <h1>LOADING</h1>;
   } else {
     return (
       <>
-        <h2>{username}</h2>
+        <h2>{`${username}'s Profile`}</h2>
         <Link to='/'>Return to Questions</Link>
-        <h3>Your Questions:</h3>
-        {questions.map((q, key) => {
-          if (q.user === username) {
-            return (
-              <div className='question-box'>
-                <Link to={`/question/${q.pk}`}>{q.question}</Link> <br></br>
-                <br></br>
-              </div>
-            );
-          }
-          return null;
-        })}
+        <h3>Your Favorited Questions:</h3>
+        {favQs ? (
+          <>
+            {favQs.map((q, key) => {
+              return (
+                <div className='question-box'>
+                  <Link to={`/question/${q.pk}`}>{q.question}</Link> <br></br>
+                  <br></br>
+                </div>
+              );
+            })}
+          </>
+        ) : (
+          <>
+            <p>You haven't added any questions to your favorites yet...</p>
+          </>
+        )}
+        <hr></hr>
+        <h3>Questions You've Asked:</h3>
+        {questions ? (
+          <>
+            {questions.map((q, key) => {
+              return (
+                <div className='question-box'>
+                  <Link to={`/question/${q.pk}`}>{q.question}</Link> <br></br>
+                  <br></br>
+                </div>
+              );
+            })}
+          </>
+        ) : (
+          <>
+            <h2>You haven't asked any questions yet...</h2>
+            <Link to='/new-question'>Ask your first Question!</Link>
+          </>
+        )}
         <hr></hr>
         <h3>Your Answers:</h3>
-        {answers.map((a, key) => {
-          if (a.user === username) {
-            return (
-              <>
-                <Link to={`/question/${a.question}`}>
-                  {questions.map((q, key) => {
-                    if (q.pk === a.question) {
-                      return (
-                        <>
-                          <p>
-                            <i>{`for question "${q.title}"`}</i>
-                          </p>
-                        </>
-                      );
-                    }
-                    return null;
-                  })}
-                  <h4>{`${a.user}'s answer`}</h4>
-                  <p>{a.answer}</p>
-                  {!a.accepted ? (
-                    <p style={{ color: 'red' }}>not best...</p>
-                  ) : (
-                    <p style={{ color: 'green' }}>BEST!</p>
-                  )}
-                </Link>
-              </>
-            );
-          }
-          return null;
-        })}
-        <Link to='/'>See All Questions</Link>
+        {answers ? (
+          <>
+            {answers.map((a, key) => {
+              return (
+                <>
+                  <Link to={`/question/${a.question}`}>
+                    {questions.map((q, key) => {
+                      if (q.pk === a.question) {
+                        return (
+                          <>
+                            <p>
+                              <i>{`for question "${q.title}"`}</i>
+                            </p>
+                          </>
+                        );
+                      }
+                      return null;
+                    })}
+                    <h4>{`${a.user}'s answer`}</h4>
+                    <p>{a.answer}</p>
+                    {!a.accepted ? (
+                      <p style={{ color: 'red' }}>not best...</p>
+                    ) : (
+                      <p style={{ color: 'green' }}>BEST!</p>
+                    )}
+                  </Link>
+                  <Link to='/'>See All Questions</Link>
+                </>
+              );
+            })}
+          </>
+        ) : (
+          <>
+            <h2>You haven't answered any questions yet...</h2>
+            <Link to='/'>Find a question to answer!</Link>
+          </>
+        )}
       </>
     );
   }

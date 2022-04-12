@@ -9,7 +9,7 @@ export default function SelectedQuestion({ token, username }) {
   const [a, setA] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [favorite, setFavorite] = useState(null);
+  // const [favorite, setFavorite] = useState(null);
 
   // const handleFavorite = (event) => {
   //   console.log('Handle Favorite Called');

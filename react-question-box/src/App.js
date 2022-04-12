@@ -19,6 +19,7 @@ const App = () => {
   );
   const [token, setToken] = useLocalStorageState('QuestionBoxToken', '');
   const [status, setStatus] = useState(null);
+  // const [error, setError] = useState('');
 
   const setAuth = (username, token) => {
     setUsername(username);

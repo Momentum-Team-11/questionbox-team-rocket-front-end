@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Questions({ username, token, setAuth }) {
-  const navigate = useNavigate;
   const [questions, setQuestions] = useState(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [favorite, setFavorite] = useState(null);
+  // const [favorite, setFavorite] = useState(null);
 
   // const handleFavorite = (event) => {
   //   console.log('Handle Favorite Called');
