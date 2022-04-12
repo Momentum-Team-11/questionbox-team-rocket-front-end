@@ -17,6 +17,7 @@ const App = () => {
     ''
   );
   const [token, setToken] = useLocalStorageState('QuestionBoxToken', '');
+  const [error, setError] = useState('');
 
   const setAuth = (username, token) => {
     setUsername(username);
@@ -40,8 +41,13 @@ const App = () => {
       })
       .catch((e) => {
         console.log(e);
+        setError(e.message);
       });
   };
+
+  if (error.includes('401')) {
+    setAuth(null, null);
+  }
 
   const isLoggedIn = username && token;
 
