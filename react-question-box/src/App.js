@@ -28,7 +28,7 @@ const App = () => {
   const handleLogOut = (event) => {
     console.log('Handle Log Out Called');
     event.preventDefault();
-    setResult(null);
+    setStatus(null);
     axios
       .post(
         'https://questionbox-rocket.herokuapp.com/auth/token/logout/',
