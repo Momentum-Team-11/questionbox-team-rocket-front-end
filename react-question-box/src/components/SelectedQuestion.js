@@ -207,7 +207,6 @@ export default function SelectedQuestion({ token, username }) {
                       <></>
                     )}
                     <div className='answer-box'>
-                      {a.length === 0 ? <h3>No Answers Yet...</h3> : <></>}
                       {a.map((a, key) => {
                         if (a.question === Number(params.Q_id)) {
                           return (
