@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Landing from './components/Landing.js';
 import Login from './components/Login.js';
 import Register from './components/Register.js';
@@ -27,6 +28,7 @@ const App = () => {
   const handleLogOut = (event) => {
     console.log('Handle Log Out Called');
     event.preventDefault();
+    setError('');
     axios
       .post(
         'https://questionbox-rocket.herokuapp.com/auth/token/logout/',
