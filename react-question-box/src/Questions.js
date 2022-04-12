@@ -58,6 +58,7 @@ export default function Questions({ username, token, setAuth }) {
             const Q_id = q.pk;
             return (
               <div className='question-box'>
+                <br></br>
                 <Link to={`/question/${Q_id}`}>
                   <h3>{q.title}</h3>
                   <h4>{q.question}</h4>

@@ -11,12 +11,9 @@ export default function UserProfile({ username, token }) {
 
   useEffect(() => {
     axios
-      .get(
-        'https://questionbox-rocket.herokuapp.com/questions/favorited/user',
-        {
-          headers: { Authorization: `Token ${token}` },
-        }
-      )
+      .get('https://questionbox-rocket.herokuapp.com/questions/favorited/', {
+        headers: { Authorization: `Token ${token}` },
+      })
       .then((res) => {
         console.log('Get Favorited Questions Called');
         console.log(res.data);
@@ -66,8 +63,10 @@ export default function UserProfile({ username, token }) {
       <>
         <h2>{`${username}'s Profile`}</h2>
         <Link to='/'>Return to Questions</Link>
+        <br></br>
+        <br></br>
         <h3>Your Favorited Questions:</h3>
-        {favQs ? (
+        {favQs.length === '0' ? (
           <>
             {favQs.map((q, key) => {
               return (
@@ -86,6 +85,7 @@ export default function UserProfile({ username, token }) {
         ) : (
           <>
             <p>You haven't added any questions to your favorites yet...</p>
+            <Link to='/'>Find a question that you like!</Link>
           </>
         )}
         <hr></hr>
@@ -140,6 +140,7 @@ export default function UserProfile({ username, token }) {
                       <p style={{ color: 'green' }}>BEST!</p>
                     )}
                   </Link>
+                  <br></br>
                 </>
               );
             })}
