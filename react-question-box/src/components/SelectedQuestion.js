@@ -201,7 +201,7 @@ export default function SelectedQuestion({ token, username }) {
                     {a.user === username ? (
                       <>
                         <Link
-                          to={`/question/${params.Q_id}/edit-answer/${a.pl}/`}
+                          to={`/question/${params.Q_id}/edit-answer/${a.pk}/`}
                         >
                           Edit Answer
                         </Link>

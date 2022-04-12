@@ -55,7 +55,7 @@ export default function UserProfile({ username, token }) {
           if (q.user === username) {
             return (
               <div className='question-box'>
-                <Link to={`/question/${q.id}`}>{q.question}</Link> <br></br>
+                <Link to={`/question/${q.pk}`}>{q.question}</Link> <br></br>
                 <br></br>
               </div>
             );
