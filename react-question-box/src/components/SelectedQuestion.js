@@ -140,191 +140,261 @@ export default function SelectedQuestion({ token, username }) {
   } else {
     return (
       <>
-        {isLoading ? (
-          <>
-            <h1>LOADING</h1>
-            <h1>{`${error}`}</h1>
-          </>
-        ) : (
-          <div className='question-box'>
-            <div className='is-flex'>
-              {q.favorited.map((f, key) => {
-                if (f === username) {
-                  return (
-                    <span className='is-icon is-small is-left'>
-                      <i // onClick={[handleFavorite, setFavorite(q.pk)]}
-                        className='fa fa-solid fa-star'
-                      ></i>
-                    </span>
-                  );
-                } else {
-                  return (
-                    <i // onClick={[handleFavorite, setFavorite(q.pk)]}
-                      className='fa fa-regular fa-star'
-                    ></i>
-                  );
-                }
-              })}
-              <div>
-                <h3>{`${q.title}`}</h3>
-                <h4>{`${q.user}'s question:`}</h4>
-                <h2>{q.question}</h2>
-                {q.user === username ? (
-                  <>
-                    <form onSubmit={handleDeleteQuestion}>
-                      <div className='field-controls'>
-                        <button type='submit'>Delete Question</button>
-                      </div>
-                    </form>
-                  </>
-                ) : (
-                  <></>
-                )}
-              </div>
-            </div>
-            <br></br>
-            {q.answers.map((a, key) => {
-              if (a.question === Number(params.Q_id)) {
-                return (
-                  <>
-                    {a.accepted ? (
-                      <>
-                        <h2>Best Answer:</h2>
-                        <h4>{`${a.user}'s answer`}</h4>
-                        <p>{a.answer}</p>
-                        {!a.accepted ? (
-                          <p
-                            style={{ color: 'red' }}
-                          >{`<img><empty-checkmark></img>`}</p>
-                        ) : (
-                          <p
-                            style={{ color: 'green' }}
-                          >{`<img><filled-checkmark></img>`}</p>
-                        )}
-                        {a.user === username ? (
-                          <>
-                            <Link
-                              to={`/question/${params.Q_id}/edit-answer/${a.pk}/`}
-                            >
-                              Edit Answer
-                            </Link>
-                            <form
-                              onSubmit={(event) => {
-                                setCurrentA(a.pk);
-                                handleDeleteAnswer(event);
-                              }}
-                            >
-                              <div className='field-controls'>
-                                <button type='submit'>Delete Answer</button>
-                              </div>
-                            </form>
-                          </>
-                        ) : (
-                          <></>
-                        )}
-                        {a.user === username ? (
-                          <>
-                            <div className='field-controls'>
-                              <form
-                                onSubmit={(event) => {
-                                  setCurrentA(a.pk);
-                                  setAccepted(false);
-                                  handleAcceptedAnswer(event);
-                                }}
-                              >
-                                <button type='submit'>
-                                  This is no longer the best answer
-                                </button>
-                              </form>
-                            </div>
-                          </>
-                        ) : (
-                          <></>
-                        )}
-                      </>
-                    ) : (
-                      <></>
-                    )}
-                  </>
-                );
-              }
-              return null;
-            })}
-            <Link to={`/question/${params.Q_id}/new-answer`}>
-              Submit New Answer
-            </Link>
-            <br></br>
-            <br></br>
-            <div className='answer-box'>
-              {q.answers.map((a, key) => {
-                if (a.question === Number(params.Q_id)) {
-                  return (
-                    <>
-                      {!a.accepted ? (
+        <div className='container mt-3'>
+          <div className='columns is-centered'>
+            <div className='column is-two-thirds'>
+              {isLoading ? (
+                <>
+                  <h1>LOADING</h1>
+                  <h1>{`${error}`}</h1>
+                </>
+              ) : (
+                <div className='question-box'>
+                  <div className='field is-grouped is-grouped-centered'>
+                    <div className='control'>
+                      <Link
+                        className='button is-primary is-small is-rounded is-light is-outlined'
+                        to='/'
+                      >
+                        See All Questions
+                      </Link>
+                    </div>
+                  </div>
+                  <br></br>
+                  <div className='is-flex is-flex-wrap-wrap is-justify-content-center is-align-content-center pr-5'>
+                    {q.favorited.map((f, key) => {
+                      if (f === username) {
+                        return (
+                          <span className='is-icon is-large is-left'>
+                            <i // onClick={[handleFavorite, setFavorite(q.pk)]}
+                              className='fa fa-solid fa-star is-size-3'
+                            ></i>
+                          </span>
+                        );
+                      } else {
+                        return (
+                          <i // onClick={[handleFavorite, setFavorite(q.pk)]}
+                            className='fa fa-regular fa-star is-size-3'
+                          ></i>
+                        );
+                      }
+                    })}
+                    <div>
+                      <h3 className='title has-text-centered has-text-weight-bold '>{`${q.title}`}</h3>
+                      <h4 className='has-text-grey is-italic is-size-5 ml-3'>{`${q.user}'s question:`}</h4>
+                      <h2 className='is-size-3 has-text-weight-medium button is-active is-warning'>
+                        {q.question}
+                      </h2>
+                      {q.user === username ? (
                         <>
-                          <h4>{`${a.user}'s answer`}</h4>
-                          <p>{a.answer}</p>
-                          {!a.accepted ? (
-                            <p
-                              style={{ color: 'red' }}
-                            >{`<img><empty-checkmark></img>`}</p>
-                          ) : (
-                            <p
-                              style={{ color: 'green' }}
-                            >{`<img><filled-checkmark></img>`}</p>
-                          )}
-                          {q.user === username ? (
-                            <>
-                              <form
-                                onSubmit={(event) => {
-                                  setCurrentA(a.pk);
-                                  setAccepted(true);
-                                  handleAcceptedAnswer(event, a.pk);
-                                }}
-                              >
-                                <button type='submit'>
-                                  Accept as Best Answer
+                          <form onSubmit={handleDeleteQuestion}>
+                            <div className='field is-grouped is-grouped-centered pr-5 pt-3'>
+                              <div className='control'>
+                                <button
+                                  className='button is-danger is-light is-outlined'
+                                  type='submit'
+                                >
+                                  Delete Question
                                 </button>
-                              </form>
-                            </>
-                          ) : (
-                            <></>
-                          )}
-                          {a.user === username ? (
+                              </div>
+                            </div>
+                          </form>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </div>
+                  <br></br>
+                  {q.answers.map((a, key) => {
+                    if (a.question === Number(params.Q_id)) {
+                      return (
+                        <>
+                          {a.accepted ? (
                             <>
-                              <Link
-                                to={`/question/${params.Q_id}/edit-answer/${a.pk}/`}
-                              >
-                                Edit Answer
-                              </Link>
-                              <form
-                                onSubmit={(event) => {
-                                  setCurrentA(a.pk);
-                                  handleDeleteAnswer(event);
-                                }}
-                              >
-                                <div className='field-controls'>
-                                  <button type='submit'>Delete Answer</button>
+                              <div>
+                                <h2 className='is-size-4 has-text-weight-medium'>
+                                  Best Answers
+                                </h2>
+                                <div className='box'>
+                                  <div className='is-flex'>
+                                    <div className='pr-4 pt-2'>
+                                      {!a.accepted ? (
+                                        <i
+                                          className='fa-regular fa-square-check is-size-4'
+                                          onClick={(event) => {
+                                            setCurrentA(a.pk);
+                                            setAccepted(true);
+                                            handleAcceptedAnswer(event, a.pk);
+                                          }}
+                                        ></i>
+                                      ) : (
+                                        <i
+                                          className='fa-solid fa-square-check is-size-4'
+                                          onClick={(event) => {
+                                            setCurrentA(a.pk);
+                                            setAccepted(false);
+                                            handleAcceptedAnswer(event, a.pk);
+                                          }}
+                                        ></i>
+                                      )}
+                                    </div>
+                                    <div>
+                                      <h4 className='is-italic has-text-grey'>{`${a.user}'s answer`}</h4>
+                                      <p className='has-text-weight-medium is-size-5'>
+                                        {a.answer}
+                                      </p>
+                                      {a.user === username ? (
+                                        <>
+                                          <div className='field is-grouped is-grouped-centered'>
+                                            <div className='control'>
+                                              <Link
+                                                className='button is-link is-small is-outlined is-light'
+                                                to={`/question/${params.Q_id}/edit-answer/${a.pk}/`}
+                                              >
+                                                Edit Answer
+                                              </Link>
+                                            </div>
+                                            <div className='control'>
+                                              <form
+                                                onSubmit={(event) => {
+                                                  setCurrentA(a.pk);
+                                                  handleDeleteAnswer(event);
+                                                }}
+                                              >
+                                                <button
+                                                  className='button is-danger is-small is-outlined is-light'
+                                                  type='submit'
+                                                >
+                                                  Delete Answer
+                                                </button>
+                                              </form>
+                                            </div>
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </div>
+                                  </div>
                                 </div>
-                              </form>
+                              </div>
                             </>
                           ) : (
                             <></>
                           )}
                         </>
-                      ) : (
-                        <></>
-                      )}
-                      <br></br>
-                    </>
-                  );
-                }
-                return null;
-              })}
+                      );
+                    }
+                    return null;
+                  })}
+                  <br></br>
+                  <div className='field is-grouped is-grouped-centered'>
+                    <Link
+                      className='button is-info is-light is-outlined'
+                      to={`/question/${params.Q_id}/new-answer`}
+                    >
+                      Submit New Answer
+                    </Link>
+                  </div>
+                  <br></br>
+                  <br></br>
+                  <div className='answer-box'>
+                    <h3 className='is-size-4 has-text-weight-medium'>
+                      Answers
+                    </h3>
+                    {q.answers.map((a, key) => {
+                      if (a.question === Number(params.Q_id)) {
+                        return (
+                          <>
+                            {!a.accepted ? (
+                              <div className='box'>
+                                <div className='is-flex'>
+                                  <div className='pr-4 pt-1'>
+                                    {!a.accepted ? (
+                                      <i
+                                        className='fa-regular fa-square-check'
+                                        onClick={(event) => {
+                                          setCurrentA(a.pk);
+                                          setAccepted(true);
+                                          handleAcceptedAnswer(event, a.pk);
+                                        }}
+                                      ></i>
+                                    ) : (
+                                      <i
+                                        className='fa-solid fa-square-check'
+                                        onClick={(event) => {
+                                          setCurrentA(a.pk);
+                                          setAccepted(false);
+                                          handleAcceptedAnswer(event, a.pk);
+                                        }}
+                                      ></i>
+                                    )}
+                                  </div>
+                                  <div>
+                                    <h4 className='is-italic has-text-grey'>{`${a.user}'s answer`}</h4>
+                                    <p className='has-text-weight-medium is-size-5'>
+                                      {a.answer}
+                                    </p>
+                                    {a.user === username ? (
+                                      <>
+                                        <div className='field is-grouped is-grouped-centered'>
+                                          <div className='control'>
+                                            <Link
+                                              className='button is-link is-small is-outlined'
+                                              to={`/question/${params.Q_id}/edit-answer/${a.pk}/`}
+                                            >
+                                              Edit Answer
+                                            </Link>
+                                          </div>
+                                          <div className='control'>
+                                            <form
+                                              onSubmit={(event) => {
+                                                setCurrentA(a.pk);
+                                                handleDeleteAnswer(event);
+                                              }}
+                                            >
+                                              <button
+                                                className='button is-danger is-small is-outlined'
+                                                type='submit'
+                                              >
+                                                Delete Answer
+                                              </button>
+                                            </form>
+                                          </div>
+                                        </div>
+                                      </>
+                                    ) : (
+                                      <></>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <></>
+                            )}
+                            <br></br>
+                          </>
+                        );
+                      }
+                      return null;
+                    })}
+                  </div>
+                </div>
+              )}
+              <div className='field is-grouped is-grouped-centered'>
+                <div className='control'>
+                  <Link
+                    className='button is-primary is-small is-rounded is-outlined is-light'
+                    to='/'
+                  >
+                    See All Questions
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
-        )}
-        <Link to='/'>See All Questions</Link>
+        </div>
       </>
     );
   }

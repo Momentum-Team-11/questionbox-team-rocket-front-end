@@ -38,38 +38,52 @@ export default function NewQuestion({ setNewQuestion, token }) {
 
   return (
     <>
-      <h2>New Question</h2>
-      <form onSubmit={handleQuestion}>
-        <div className='field-controls'>
-          <label htmlFor='new-title'>Title: </label>
-          <input
-            type='text'
-            className='text-input'
-            id='new-title'
-            required
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-            autoFocus
-          />
+      <h2 className='title has-text-centered'>New Question</h2>
+      <form className='is-centered mx-6' onSubmit={handleQuestion}>
+        <div className='field'>
+          <label className='label' htmlFor='new-title'>
+            Title:{' '}
+          </label>
+          <div className='control'>
+            <input
+              type='text'
+              className='input'
+              id='new-title'
+              required
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              autoFocus
+            />
+          </div>
         </div>
-        <div className='field-controls'>
-          <label htmlFor='new-question'>Question: </label>
-          <input
-            type='text'
-            className='text-input'
-            id='new-question'
-            height='50'
-            size='50'
-            required
-            value={question}
-            onChange={(event) => setQuestion(event.target.value)}
-          />
+        <div className='field'>
+          <label className='label' htmlFor='new-question'>
+            Question:{' '}
+          </label>
+          <div className='control'>
+            <input
+              type='text'
+              className='input'
+              id='new-question'
+              height='50'
+              size='50'
+              required
+              value={question}
+              onChange={(event) => setQuestion(event.target.value)}
+            />
+          </div>
         </div>
-        <div className='field-controls'>
-          <button type='submit'>Submit Question</button>
-        </div>
-        <div className='field-controls'>
-          <Link to={'/'}>Cancel</Link>
+        <div className='field is-grouped is-grouped-centered'>
+          <div className='control'>
+            <button className='button is-success' type='submit'>
+              Submit Question
+            </button>
+          </div>
+          <div className='control'>
+            <Link className='button is-link' to={'/'}>
+              Cancel
+            </Link>
+          </div>
         </div>
       </form>
     </>
