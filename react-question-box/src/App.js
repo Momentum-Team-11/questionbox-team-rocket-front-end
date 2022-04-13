@@ -8,11 +8,19 @@ import NewAnswer from './components/NewAnswer.js';
 import UserProfile from './components/UserProfile.js';
 import EditAnswer from './components/EditAnswer.js';
 import useLocalStorageState from 'use-local-storage-state';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  Navigate,
+  useNavigate,
+} from 'react-router-dom';
 import SelectedQuestion from './components/SelectedQuestion.js';
 import axios from 'axios';
 
 const App = () => {
+  const navigate = useNavigate;
   const [username, setUsername] = useLocalStorageState(
     'QuestionBoxUsername',
     ''
@@ -42,10 +50,13 @@ const App = () => {
         console.log(res);
         setStatus(res.status);
         setAuth(null, null);
+        navigate('/');
       })
       .catch((e) => {
         console.log(e);
         setStatus(e.status);
+        setAuth(null, null);
+        navigate('/');
       });
   };
 
@@ -63,20 +74,27 @@ const App = () => {
         ) : (
           <>
             <div className='hero is-warning is-small'>
-              <h1 className='title has-text-centered has-text-weigh-bold'>
-                QuestionBox
-              </h1>
-              <Link
-                className='has-text-centered is-size-4'
-                to={`/${username}`}
-              >{`${username}`}</Link>
+              <Link to='/'>
+                <h1 className='title is-1 has-text-centered has-text-weigh-bold mt-3'>
+                  QuestionBox
+                </h1>
+              </Link>
+              <h2 className='mr-5 pr-4 has-text-right is-size-4'>{`${username}`}</h2>
+              <div className='mr-4 pr-5 field is-grouped is-grouped-right'>
+                <Link
+                  className=' button is-link is-small is-dark'
+                  to={`/${username}`}
+                >
+                  <p className='mr-1 ml-2'>Profile</p>
+                </Link>
+              </div>
               <div className='auth-buttons'>
                 <form
-                  className='field is-grouped is-grouped-centered'
+                  className='mr-4 pr-5 field is-grouped is-grouped-right'
                   onSubmit={handleLogOut}
                 >
                   <button
-                    className='button is-dark is-small mb-3'
+                    className='button is-danger is-small is-dark mb-3'
                     type='submit'
                   >
                     Log Out

@@ -10,32 +10,42 @@ export default function SelectedQuestion({ token, username }) {
   const [accepted, setAccepted] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  // const [favorite, setFavorite] = useState(null);
+  const [favorite, setFavorite] = useState(null);
+  const [newFavArray, setNewFavArray] = useState(null);
 
-  // const handleFavorite = (event) => {
-  //   console.log('Handle Favorite Called');
-  //   event.preventDefault();
-  // axios
-  //   .post(
-  //     'https://questionbox-rocket.herokuapp.com/questions/favorited',
-  //     {
-  //       question: favorite,
-  //     },
-  //     {
-  //       headers: { Authorization: `Token ${token}` },
-  //     }
-  //   )
-  //   .then((res) => {
-  //     console.log(res.data);
-  //     setFavorite(null);
-  //   })
-  //   .catch((e) => setError(e.message));
-  // if (error) {
-  //   return error;
-  // } else {
-  //   console.log('Successfully favorited Question!');
-  // }
-  // };
+  const handleFavorite = (event) => {
+    console.log('Handle Favorite Called');
+  };
+
+  const handleUnFavorite = (event) => {
+    console.log('Handle UnFavorite Called');
+
+    // q.favorited.map((f, idx) => {
+    //   if (f === username) {
+    //     return setFavorite(favorite.splice(idx, 1));
+    //   }
+    //   return null;
+    // });
+    // console.log(favorite);
+    // axios
+    //   .patch(
+    //     `https://questionbox-rocket.herokuapp.com/questions/${params.Q_id}`,
+    //     {
+    //       favorited: favorite,
+    //     },
+    //     {
+    //       headers: { Authorization: `Token ${token}` },
+    //     }
+    //   )
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setFavorite(null);
+    //     console.log('Successfully UnFavorited Question!');
+    //     setIsLoading(true);
+    //     return navigate(`/question/${params.Q_id}`);
+    //   })
+    //   .catch((e) => setError(e.message));
+  };
 
   const handleAcceptedAnswer = (event) => {
     console.log('Handle Accepted Answer Called');
@@ -101,24 +111,6 @@ export default function SelectedQuestion({ token, username }) {
 
   useEffect(() => {
     console.log(params);
-    //   axios
-    //     .get(
-    //       `https://questionbox-rocket.herokuapp.com/questions/${params.Q_id}/`,
-    //       {
-    //         headers: {
-    //           Authorization: `Token ${token}`,
-    //         },
-    //       }
-    //     )
-    //     .then((res) => {
-    //       console.log(res.data);
-    //       setQ(res.data);
-    //       setIsLoading(false);
-    //     })
-    //     .catch((e) => {
-    //       setError(e.message);
-    //     });
-    // }, [params.Q_id, token]);
 
     axios
       .get(`https://questionbox-rocket.herokuapp.com/questions/${params.Q_id}`)
@@ -150,10 +142,10 @@ export default function SelectedQuestion({ token, username }) {
                 </>
               ) : (
                 <div className='question-box'>
-                  <div className='field is-grouped is-grouped-centered'>
+                  <div className='field is-grouped is-grouped-centered mt-4'>
                     <div className='control'>
                       <Link
-                        className='button is-primary is-small is-rounded is-light is-outlined'
+                        className='button is-large is-primary is-rounded is-light is-outlined'
                         to='/'
                       >
                         See All Questions
@@ -162,26 +154,28 @@ export default function SelectedQuestion({ token, username }) {
                   </div>
                   <br></br>
                   <div className='is-flex is-flex-wrap-wrap is-justify-content-center is-align-content-center pr-5'>
-                    {q.favorited.map((f, key) => {
-                      if (f === username) {
-                        return (
-                          <span className='is-icon is-large is-left'>
-                            <i // onClick={[handleFavorite, setFavorite(q.pk)]}
-                              className='fa fa-solid fa-star is-size-3'
-                            ></i>
-                          </span>
-                        );
-                      } else {
-                        return (
-                          <i // onClick={[handleFavorite, setFavorite(q.pk)]}
-                            className='fa fa-regular fa-star is-size-3'
-                          ></i>
-                        );
-                      }
-                    })}
+                    {q.favorited.includes(username) ? (
+                      <span className='is-icon is-large is-left'>
+                        <i
+                          onClick={(event) => {
+                            setFavorite(q.favorited);
+                            handleUnFavorite(event);
+                          }}
+                          className='fa fa-solid fa-star is-size-3'
+                        ></i>
+                      </span>
+                    ) : (
+                      <i
+                        onClick={(event) => {
+                          handleFavorite(event);
+                          setFavorite(q.favorited);
+                        }}
+                        className='fa fa-regular fa-star is-size-3'
+                      ></i>
+                    )}
                     <div>
-                      <h3 className='title has-text-centered has-text-weight-bold '>{`${q.title}`}</h3>
-                      <h4 className='has-text-grey is-italic is-size-5 ml-3'>{`${q.user}'s question:`}</h4>
+                      <h3 className='title has-text-centered has-text-weight-bold'>{`${q.title}`}</h3>
+                      <h4 className='has-text-grey has-text-weight-medium is-italic is-size-5 ml-3'>{`${q.user}'s question:`}</h4>
                       <h2 className='is-size-3 has-text-weight-medium button is-active is-warning'>
                         {q.question}
                       </h2>
@@ -385,7 +379,7 @@ export default function SelectedQuestion({ token, username }) {
               <div className='field is-grouped is-grouped-centered'>
                 <div className='control'>
                   <Link
-                    className='button is-primary is-small is-rounded is-outlined is-light'
+                    className='button is-primary is-rounded is-outlined is-light'
                     to='/'
                   >
                     See All Questions

@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 export default function Landing() {
   return (
     <>
-      <div className='hero is-warning is-small'>
-        <h1 className='hero-body title has-text-centered has-text-weigh-bold'>
+      <div className='hero is-warning is-small pb-4'>
+        <h1 className='title is-1 has-text-centered has-text-weigh-bold mt-3'>
           QuestionBox
         </h1>
       </div>

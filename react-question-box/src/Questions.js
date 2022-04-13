@@ -51,13 +51,13 @@ export default function Questions({ username, token, setAuth }) {
     return (
       <>
         {error && <h3>{error}</h3>}
-        <div className='container mt-3'>
+        <div className='container'>
           <div className='columns is-centered'>
             <div className='column is-two-thirds'>
               <div className='questions-container'>
-                <h2 className='title has-text-centered'>Questions</h2>
+                <h2 className='title is-1 has-text-centered mt-3'>Questions</h2>
                 <div className='field is-grouped is-grouped-centered'>
-                  <Link className='button' to='/new-question'>
+                  <Link className='button is-large' to='/new-question'>
                     New Question
                   </Link>
                 </div>
@@ -67,30 +67,18 @@ export default function Questions({ username, token, setAuth }) {
                     <div className='question-box'>
                       <br></br>
                       <div className='is-flex'>
-                        {q.favorited.length === 0 ? (
+                        {q.favorited.includes(username) ? (
+                          <span className='is-icon is-small is-left'>
+                            <i // onClick={[handleFavorite, setFavorite(q.pk)]}
+                              className='fa fa-solid fa-star'
+                            ></i>
+                          </span>
+                        ) : (
                           <i // onClick={[handleFavorite, setFavorite(q.pk)]}
                             className='fa fa-regular fa-star'
                           ></i>
-                        ) : (
-                          <></>
                         )}
-                        {q.favorited.map((f, key) => {
-                          if (f === username) {
-                            return (
-                              <span className='is-icon is-small is-left'>
-                                <i // onClick={[handleFavorite, setFavorite(q.pk)]}
-                                  className='fa fa-solid fa-star'
-                                ></i>
-                              </span>
-                            );
-                          } else {
-                            return (
-                              <i // onClick={[handleFavorite, setFavorite(q.pk)]}
-                                className='fa fa-regular fa-star'
-                              ></i>
-                            );
-                          }
-                        })}
+
                         <div>
                           <Link to={`/question/${Q_id}`}>
                             <h3 className='is-size-4'>{q.title}</h3>
