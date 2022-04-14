@@ -2,6 +2,8 @@
 
 This application is a question and answer platform, similar to Stack Overflow.
 
+This application was created entirely in [React](https://reactjs.org/) and utilizes [axios](https://axios-http.com/), [react-router](https://reactrouterdotcom.fly.dev/), and [use-local-storage-state](https://github.com/astoilkov/use-local-storage-state), styled by [Bulma](https://bulma.io/).
+
 Current Production Model: https://polite-moxie-82b385.netlify.app
 
 .
