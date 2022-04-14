@@ -39,7 +39,9 @@ https://github.com/Momentum-Team-11/questionbox-team-rocket
 
 - download the zip file from [here](https://github.com/Momentum-Team-11/questionbox-team-rocket-front-end/archive/refs/heads/main.zip)
 - unzip the file to your desired location
-  **OR**
+
+**OR**
+
 - clone this repo via your CLI of choice at your desired location
 - navigate to the location of the unziped/cloned repo in your CLI of choice
 - `cd` into that directory
