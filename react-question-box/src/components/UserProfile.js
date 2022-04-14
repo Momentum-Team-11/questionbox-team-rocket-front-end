@@ -46,13 +46,18 @@ export default function UserProfile({ username, token }) {
             console.log('Get Answers Called');
             console.log(res.data);
             setAnswers(res.data);
-            setIsLoading(false);
           })
           .catch((e) => {
             setError(e.message);
           });
       });
   }, [error, token]);
+
+  useEffect(() => {
+    if (favQs && questions && answers) {
+      setIsLoading(false);
+    }
+  }, [answers, favQs, questions]);
 
   if (!token) return <Navigate to='/' />;
 
@@ -85,11 +90,29 @@ export default function UserProfile({ username, token }) {
                   {favQs.map((q, key) => {
                     return (
                       <div className='question-box'>
-                        <Link className='is-size-4' to={`/question/${q.pk}`}>
-                          {q.title}
-                          <br></br>
-                          {q.question}
-                        </Link>
+                        <div className='is-flex'>
+                          {q.favorited.includes(username) ? (
+                            <span className='is-icon is-small is-left'>
+                              <i // onClick={[handleFavorite, setFavorite(q.pk)]}
+                                className='fa fa-solid fa-star'
+                              ></i>
+                            </span>
+                          ) : (
+                            <i // onClick={[handleFavorite, setFavorite(q.pk)]}
+                              className='fa fa-regular fa-star'
+                            ></i>
+                          )}
+                          <div>
+                            <Link
+                              className='is-size-4'
+                              to={`/question/${q.pk}`}
+                            >
+                              {q.title}
+                            </Link>
+                            <br></br>
+                            <Link to={`/question/${q.pk}`}>{q.question}</Link>
+                          </div>
+                        </div>
                         <br></br>
                         <br></br>
                       </div>
