@@ -80,7 +80,7 @@ export default function UserProfile({ username, token }) {
               Your Favorited Questions:
             </h3>
             <div className='questions-container'>
-              {favQs.length === '0' ? (
+              {favQs.length > 0 ? (
                 <>
                   {favQs.map((q, key) => {
                     return (
@@ -118,7 +118,7 @@ export default function UserProfile({ username, token }) {
             <h3 className='is-size-4 has-text-weight-medium has-text-centered'>
               Questions You've Asked:
             </h3>
-            {questions ? (
+            {questions.length > 0 ? (
               <>
                 {questions.map((q, key) => {
                   return (
@@ -157,7 +157,7 @@ export default function UserProfile({ username, token }) {
                 <div className='field is-grouped is-grouped-centered mt-3'>
                   <div className='control'>
                     <Link
-                      className='button is-small is-rounded is-outlined is-light'
+                      className='button is-rounded is-outlined is-dark'
                       to='/new-question'
                     >
                       Ask your first Question!
@@ -170,7 +170,7 @@ export default function UserProfile({ username, token }) {
             <h3 className='is-size-4 has-text-weight-medium has-text-centered'>
               Your Answers:
             </h3>
-            {answers ? (
+            {answers.length > 0 ? (
               <>
                 {answers.map((a, key) => {
                   return (
@@ -221,8 +221,19 @@ export default function UserProfile({ username, token }) {
               </>
             ) : (
               <>
-                <h2>You haven't answered any questions yet...</h2>
-                <Link to='/'>Find a question to answer!</Link>
+                <p className='has-text-centered'>
+                  You haven't answered any questions yet...
+                </p>
+                <div className='field is-grouped is-grouped-centered mt-3'>
+                  <div className='control'>
+                    <Link
+                      className='button is-primary is-rounded is-outlined is-light'
+                      to='/'
+                    >
+                      Find a question to answer!
+                    </Link>
+                  </div>
+                </div>
               </>
             )}
           </div>

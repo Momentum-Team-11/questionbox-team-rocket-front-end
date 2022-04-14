@@ -42,27 +42,38 @@ export default function NewAnswer({ token }) {
 
   return (
     <>
-      <h2>New Answer</h2>
-      <form onSubmit={handleAnswer}>
-        <div className='field-controls'>
-          <label htmlFor='new-answer'>Answer: </label>
-          <input
-            type='text'
-            className='text-input'
-            id='new-answer'
-            height='50'
-            size='50'
-            required
-            value={newAnswer}
-            onChange={(event) => setNewAnswer(event.target.value)}
-            autoFocus
-          />
+      <h2 className='title has-text-centered'>New Answer</h2>
+      <form className='is-centered mx-6' onSubmit={handleAnswer}>
+        <div className='field'>
+          <label className='label' htmlFor='new-answer'>
+            Answer:
+          </label>
+          <div className='control'>
+            <textarea
+              type='text'
+              className='textarea'
+              id='new-answer'
+              height='50'
+              size='50'
+              placeholder='Enter your answer here!'
+              required
+              value={newAnswer}
+              onChange={(event) => setNewAnswer(event.target.value)}
+              autoFocus
+            />
+          </div>
         </div>
-        <div className='field-controls'>
-          <button type='submit'>Submit Answer</button>
-        </div>
-        <div className='field-controls'>
-          <Link to={`/question/${params.Q_id}`}>Cancel</Link>
+        <div className='field is-grouped is-grouped-centered'>
+          <div className='control'>
+            <button className='button is-success' type='submit'>
+              Submit Answer
+            </button>
+          </div>
+          <div className='control'>
+            <Link className='button is-warning' to={`/question/${params.Q_id}`}>
+              Cancel
+            </Link>
+          </div>
         </div>
       </form>
     </>

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
 
-export default function NewQuestion({ setNewQuestion, token }) {
+export default function NewQuestion({ token }) {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [question, setQuestion] = useState('');
@@ -52,6 +52,7 @@ export default function NewQuestion({ setNewQuestion, token }) {
               required
               value={title}
               onChange={(event) => setTitle(event.target.value)}
+              placeholder='e.g. short summary of the subject of the question'
               autoFocus
             />
           </div>
@@ -61,12 +62,13 @@ export default function NewQuestion({ setNewQuestion, token }) {
             Question:{' '}
           </label>
           <div className='control'>
-            <input
+            <textarea
               type='text'
-              className='input'
+              className='textarea'
               id='new-question'
               height='50'
               size='50'
+              placeholder='Enter your question here!'
               required
               value={question}
               onChange={(event) => setQuestion(event.target.value)}
@@ -80,7 +82,7 @@ export default function NewQuestion({ setNewQuestion, token }) {
             </button>
           </div>
           <div className='control'>
-            <Link className='button is-link' to={'/'}>
+            <Link className='button is-warning' to={'/'}>
               Cancel
             </Link>
           </div>

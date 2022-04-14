@@ -13,7 +13,6 @@ import {
   Route,
   Routes,
   Link,
-  Navigate,
   useNavigate,
 } from 'react-router-dom';
 import SelectedQuestion from './components/SelectedQuestion.js';

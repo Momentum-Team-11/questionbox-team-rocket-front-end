@@ -182,7 +182,7 @@ export default function SelectedQuestion({ token, username }) {
                       {q.user === username ? (
                         <>
                           <form onSubmit={handleDeleteQuestion}>
-                            <div className='field is-grouped is-grouped-centered pr-5 pt-3'>
+                            <div className='field is-grouped is-grouped-centered ml-3 pt-3'>
                               <div className='control'>
                                 <button
                                   className='button is-danger is-light is-outlined'
@@ -213,24 +213,34 @@ export default function SelectedQuestion({ token, username }) {
                                 <div className='box'>
                                   <div className='is-flex'>
                                     <div className='pr-4 pt-2'>
-                                      {!a.accepted ? (
-                                        <i
-                                          className='fa-regular fa-square-check is-size-4'
-                                          onClick={(event) => {
-                                            setCurrentA(a.pk);
-                                            setAccepted(true);
-                                            handleAcceptedAnswer(event, a.pk);
-                                          }}
-                                        ></i>
-                                      ) : (
-                                        <i
-                                          className='fa-solid fa-square-check is-size-4'
-                                          onClick={(event) => {
-                                            setCurrentA(a.pk);
-                                            setAccepted(false);
-                                            handleAcceptedAnswer(event, a.pk);
-                                          }}
-                                        ></i>
+                                      {q.user === username && (
+                                        <>
+                                          {!a.accepted ? (
+                                            <i
+                                              className='fa-regular fa-square-check is-size-4'
+                                              onClick={(event) => {
+                                                setCurrentA(a.pk);
+                                                setAccepted(true);
+                                                handleAcceptedAnswer(
+                                                  event,
+                                                  a.pk
+                                                );
+                                              }}
+                                            ></i>
+                                          ) : (
+                                            <i
+                                              className='fa-solid fa-square-check is-size-4'
+                                              onClick={(event) => {
+                                                setCurrentA(a.pk);
+                                                setAccepted(false);
+                                                handleAcceptedAnswer(
+                                                  event,
+                                                  a.pk
+                                                );
+                                              }}
+                                            ></i>
+                                          )}
+                                        </>
                                       )}
                                     </div>
                                     <div>
@@ -305,24 +315,28 @@ export default function SelectedQuestion({ token, username }) {
                               <div className='box'>
                                 <div className='is-flex'>
                                   <div className='pr-4 pt-1'>
-                                    {!a.accepted ? (
-                                      <i
-                                        className='fa-regular fa-square-check'
-                                        onClick={(event) => {
-                                          setCurrentA(a.pk);
-                                          setAccepted(true);
-                                          handleAcceptedAnswer(event, a.pk);
-                                        }}
-                                      ></i>
-                                    ) : (
-                                      <i
-                                        className='fa-solid fa-square-check'
-                                        onClick={(event) => {
-                                          setCurrentA(a.pk);
-                                          setAccepted(false);
-                                          handleAcceptedAnswer(event, a.pk);
-                                        }}
-                                      ></i>
+                                    {q.user === username && (
+                                      <>
+                                        {!a.accepted ? (
+                                          <i
+                                            className='fa-regular fa-square-check is-size-4'
+                                            onClick={(event) => {
+                                              setCurrentA(a.pk);
+                                              setAccepted(true);
+                                              handleAcceptedAnswer(event, a.pk);
+                                            }}
+                                          ></i>
+                                        ) : (
+                                          <i
+                                            className='fa-solid fa-square-check is-size-4'
+                                            onClick={(event) => {
+                                              setCurrentA(a.pk);
+                                              setAccepted(false);
+                                              handleAcceptedAnswer(event, a.pk);
+                                            }}
+                                          ></i>
+                                        )}
+                                      </>
                                     )}
                                   </div>
                                   <div>
