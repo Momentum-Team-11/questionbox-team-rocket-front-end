@@ -10,8 +10,8 @@ export default function SelectedQuestion({ token, username }) {
   const [accepted, setAccepted] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [favorite, setFavorite] = useState(null);
-  const [newFavArray, setNewFavArray] = useState(null);
+  // const [favorite, setFavorite] = useState(null);
+  // const [newFavArray, setNewFavArray] = useState(null);
 
   const handleFavorite = (event) => {
     console.log('Handle Favorite Called');
@@ -158,7 +158,7 @@ export default function SelectedQuestion({ token, username }) {
                       <span className='is-icon is-large is-left'>
                         <i
                           onClick={(event) => {
-                            setFavorite(q.favorited);
+                            // setFavorite(q.favorited);
                             handleUnFavorite(event);
                           }}
                           className='fa fa-solid fa-star is-size-3'
@@ -167,8 +167,8 @@ export default function SelectedQuestion({ token, username }) {
                     ) : (
                       <i
                         onClick={(event) => {
+                          // setFavorite(q.favorited);
                           handleFavorite(event);
-                          setFavorite(q.favorited);
                         }}
                         className='fa fa-regular fa-star is-size-3'
                       ></i>
