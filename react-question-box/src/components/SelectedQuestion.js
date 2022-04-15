@@ -200,6 +200,9 @@ export default function SelectedQuestion({ token, username }) {
                     </div>
                   </div>
                   <br></br>
+                  <h2 className='is-size-4 has-text-weight-medium'>
+                    Best Answers
+                  </h2>
                   {q.answers.map((a, key) => {
                     if (a.question === Number(params.Q_id)) {
                       return (
@@ -207,9 +210,6 @@ export default function SelectedQuestion({ token, username }) {
                           {a.accepted ? (
                             <>
                               <div>
-                                <h2 className='is-size-4 has-text-weight-medium'>
-                                  Best Answers
-                                </h2>
                                 <div className='box'>
                                   <div className='is-flex'>
                                     <div className='pr-4 pt-2'>
@@ -287,6 +287,7 @@ export default function SelectedQuestion({ token, username }) {
                           ) : (
                             <></>
                           )}
+                          <br></br>
                         </>
                       );
                     }
